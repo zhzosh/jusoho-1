@@ -1,0 +1,30 @@
+<?php if ($this->getActive()):?>
+<td>
+	<span class="cart-pionts">
+		<?php echo $this->getPoints();?>
+	</span>
+	<span style="display:none;" class="cart-unit-pionts">
+		<?php echo $this->getUnitPoints();?>
+	</span>
+</td>
+<?php endif;?>
+<script type="text/javascript">
+//<![CDATA[
+     var $items = $('#shopping-cart-table tbody tr');
+     if ($items.size()) {
+         $items.each(function(){
+             $(this).find('.s-amount .qty').change(function(){
+                 var $elUnit = $(this).parent().parent().find('.cart-unit-pionts');
+                 if ($elUnit.size()) {var unitPoints = parseInt($elUnit.text());}
+
+                 var $el = $(this).parent().parent().find('.cart-pionts');
+                 var qty = parseInt($(this).val());
+                 if (qty >=0 && unitPoints && $el.size()) {
+                     $el.text(unitPoints*qty);
+                 }
+             });
+             
+         });
+     }
+//]]>
+</script>

@@ -1,0 +1,84 @@
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_orders = $this->getOrders(); ?>
+	<h1><?php echo $this->__('My Orders') ?></h1>
+
+<?php if($_orders->getSize()): ?>
+ <table bordercolor="#e3e3e3" border="1" width="100%" class="data-table1" id="my-orders-table">
+
+	<tbody>
+		<tr>
+				<th><?php echo $this->__('Order #') ?></th>
+				<th><?php echo $this->__('Date') ?></th>
+				<th><?php echo $this->__('Ship to') ?></th>
+				<th><span class="nobr"><?php echo $this->__('Order Total') ?></span></th>
+				<th><?php echo $this->__('Order Status') ?></th>
+				<th><?php echo $this->__('Payment Method') ?></th>
+				<th width="150"><?php echo $this->__('Action') ?></th>
+			</tr>
+		<?php $_odd = ''; ?>
+		<?php foreach ($_orders as $_order): ?>
+		<tr>
+			<td><?php echo $_order->getRealOrderId() ?></td>
+			<td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
+			<td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+			<td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+			<td><?php echo $_order->getStatusLabel(); ?></td>
+			<td><?php echo $_order->getPayment()->getMethodInstance()->getTitle();?></td>
+			<td class="a-left">
+
+                <?php if($_order->getStatus()=='pending' && $this->canOnlinePayment($_order)): ?>
+                <a class="btn_strong pay bfR" href="<?php echo $_order->getPayment()->getMethodInstance()->getPaymentRedirectUrl().'order_id/'.$_order->getRealOrderId()?>" target="_blank"><?php echo $this->__('Go to pay') ?></a>
+				<?php endif; ?>
+				<span >
+				<a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo $this->__('View Order') ?></a>
+				</span>
+
+				<?php if($_order->getStatus()=='pending' || $_order->getStatus()=='processing'): ?>
+				<span class="separator">|</span>
+				<span>
+				<a href="<?php echo $this->getCancelUrl($_order) ?>"><?php echo $this->__('Cancel Order') ?></a>
+				</span>
+				<?php endif; ?>
+
+
+			</td>
+		</tr>
+		<?php endforeach; ?>
+		<?php else: ?>
+			<tr>
+				<td colspan="6"><?php echo $this->__('You have placed no orders.'); ?></td>
+			</tr>
+			<?php endif; ?>
+	</tbody>
+</table>
+<?php echo $this->getPagerHtml(); ?>
+
+<div id="loadblock" style="display:none;" class="pay_light">
+
+    <div class="note"><?php echo $this->__('Please Pay In New Website And Choose Your Operation');?></div>
+    <ul class="form-list">
+        <li class="control"><strong><?php echo $this->__('Pay Successfully');?></strong> <a class="reg" href='<?php echo $this->getReturnUrl();?>'><?php echo $this->__('View Order');?></a>
+        </li>
+        <li class="control">
+            <strong><?php echo $this->__('Pay Unsuccessfully');?></strong> <a class="reg"
+                                                                              href='javascript:returnPay()'><?php echo $this->__('Return To Pay');?></a>
+        </li>
+    </ul>
+</div>
+    <script type="text/javascript">
+    //<![CDATA[
+    var showDialog = function() {
+        $('#loadblock').dialog({width:430, height: 210, modal: true,title:"<?php echo $this->__('Login Payment Website To Pay');?>"});
+    }
+    $(function() {
+        $('.pay').click(function() {
+            showDialog();
+        });
+    });
+    function returnPay() {
+        $('.ui-dialog-titlebar-close').click();
+    }
+
+    //]]>
+</script>

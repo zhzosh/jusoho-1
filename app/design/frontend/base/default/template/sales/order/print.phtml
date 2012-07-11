@@ -1,0 +1,55 @@
+
+<?php $_order = $this->getOrder() ?>
+<h1><?php echo $this->__('Order #%s', $_order->getRealOrderId()) ?></h1>
+<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+<div class="order-items clearfix">
+<?php if (!$_order->getIsVirtual()): ?>
+<div class="order_row">
+<h6><?php echo $this->__('Shipping Address') ?></h6>
+<address>
+<?php echo $_order->getShippingAddress()->format('html') ?>
+</address>
+</div>
+<div class="order_row">
+<h6><?php echo $this->__('支付及配送方式') ?>
+<?php /* | <a href="#"><?php echo $this->__('Track Order') ?></a>*/ ?>
+</h6>
+<?php if ($_order->getShippingDescription()): ?>
+<?php echo $_order->getShippingDescription() ?>
+<?php else: ?>
+<p><?php echo $this->helper('sales')->__('No shipping information available'); ?></p>
+<?php endif; ?>
+<?php echo $this->getPaymentInfoHtml() ?> </div>
+<div class="order_row">
+<h6>发票信息</h6>
+<ul>
+<li>发票类型：普通发票</li>
+<li>发票抬头：个人</li>
+<li>发票内容：明细</li>
+</ul>
+</div>
+<?php endif; ?>
+<?php echo $this->getChildHtml('order_view') ?> </div>
+
+
+<h2><?php echo $this->__('Items Ordered') ?></h2>
+<table bordercolor="#e3e3e3" border="1" width="100%" class="data-table1" id="my-orders-table">
+ 
+        <tr>
+            <th><?php echo $this->__('Product Name') ?></th>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th><?php echo $this->__('Price') ?></th>
+            <th><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
+        </tr>
+    <?php $_items = $_order->getItemsCollection(); ?>
+    <?php $_count = $_items->count(); ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getParentItem()) continue; ?>
+    <tbody>
+        <?php echo $this->getItemHtml($_item) ?>
+    </tbody>
+        <?php endforeach; ?>
+</table>
+<ul class="order_totals"> <?php echo $this->getChildHtml('order_totals') ?></ul>
+<script type="text/javascript">window.print();</script>

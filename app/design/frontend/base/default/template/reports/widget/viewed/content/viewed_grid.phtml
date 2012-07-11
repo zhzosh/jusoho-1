@@ -1,0 +1,17 @@
+<?php if ($_products = $this->getRecentlyViewedProducts()): ?>
+
+<div class="widget widget-viewed">
+	<div class="widget-title">
+		<h2><span class="bfR"><a href="<?php echo $this->helper('catalog/product_view')->getClearViewListUrl() ?>" class="clearbnt" ><?php echo $this->__('Clear All') ?></a></span><?php echo $this->__('Recently Viewed') ?></h2>
+	</div>
+	<div class="widget-content mini_prolist">
+		<?php $i=0; foreach ($_products as $_product): ?>
+		<dl class="item<?php if($i++==0) echo ' first'; ?>">
+			<dt class="pic"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(80) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a></dt>
+			<dd class="name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></dd>
+			<dd class="price"><?php echo $this->getPriceHtml($_product, true, '-widget-viewed-grid') ?></dd>
+		</dl>
+		<?php endforeach; ?>
+	</div>
+</div>
+<?php endif; ?>

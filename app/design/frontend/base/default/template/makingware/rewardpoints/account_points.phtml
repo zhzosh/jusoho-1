@@ -1,0 +1,15 @@
+
+<?php if ($this->getIsActive()):?>
+<?php
+$group = Mage::getModel('customer/group');
+$group->load(Mage::getModel('customer/session')->getCustomerGroupId());
+?>
+<div class="account_points">
+	<dl>
+		<dd class="account">当前等级：<strong><?php echo $group->getCode(); ?></strong></dd>
+		<dd><?php echo $this->__('Total Points') ?>：<strong><?php echo sprintf('%d', $this->getTotalPoints()); ?></strong> </dd>
+		<dd><?php echo $this->__('Used Points') ?>：<strong><?php echo sprintf('%d', $this->getUsedPoints()); ?></strong> </dd>
+		<dd><?php echo $this->__('Available Points') ?>：<strong><?php echo sprintf('%d', $this->getAvailablePoints()); ?></strong> </dd>
+	</dl>
+</div>
+<?php endif;?>

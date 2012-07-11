@@ -1,0 +1,399 @@
+<img src="/skin/frontend/base/default/images/exchange/jifen.jpg" />
+<script type="text/javascript">
+//<![CDATA[
+   window.isLogin = function(){
+	   if (!eval("<?php echo $this->isLogin() ? 'true' : 'false';?>")) {
+		   alert("<?php echo $this->__('Please log on exchange products.');?>");
+		   return false;
+	   }
+	   return true;
+   };
+//]]>
+</script>
+
+<div class="exchange_content">
+<form id="exchange-form" name="exchange-form" method="post" action="<?php echo $this->getSubmitUrl();?>">
+<div class="exchange_pro">
+    <div class="exchange_title"><span class="title">1.<?php echo $this->__('Select points goods');?></span></div>
+    <div class="clearfix cont">
+        <div class="exchange_totals price-box top">
+            <label><?php echo $this->__('Available Points');?>：</label> <span
+                class="available_points price"><?php echo $this->getAvailablePoints();?></span>&nbsp;&nbsp;
+            <label><?php echo $this->__('Has chosen the quantity of a commodity');?>:</label> <span
+                class="items_count price">0</span>&nbsp;&nbsp;
+            <label><?php echo $this->__('Totals points');?>:</label> <span class="items_points price">0</span>
+        </div>
+        <ul id="exchange_items" class="exchange_items" style="overflow:auto;zoom:1;">
+            <?php foreach ($this->getItems() as $item): ?>
+            <li>
+                <dl class="item clearfix">
+                    <dd class="title"></dd>
+                    <dd class="rps">
+                        <div class="pic">
+                            <img src="<?php echo $this->helper('catalog/image')->init($item->getProduct(), 'image')->resize(100);?>"
+                                 alt="<?php echo $item->getProduct()->getName();?>" bigpic="<?php echo $this->helper('catalog/image')->init($item->getProduct(), 'image')->resize(300);?>"/></div>
+                        <div class="name">
+                          <strong> <a href="<?php echo $item->getProduct()->getProductUrl();?>" target="_blank">
+							<?php echo $item->getProduct()->getName();?></a> * 1</strong>
+                            <p style="margin-bottom: 5px">
+                            	<?php echo $this->__('Goods Code');?>：<?php echo $item->getProduct()->getSku();?>
+                            </p>
+                            <?php echo mb_substr($item->getProduct()->getShortDescription(), 0, 50, 'utf-8'); ?>
+                        </div>
+
+                    </dd>
+                    <dd class="bnt">
+                        <a href="#" class="buttons" title="<?php echo $this->__('Exchange');?>"></a>
+                        <input type="checkbox" name="exchange[]" value="<?php echo $item->getId();?>" style="display:none;">
+                    </dd>
+                    <dd class="rp_price">
+                        <div><?php echo $this->__('Required points');?>：</label><span class="price r_price"><?php echo $item->getPoints();?></span><br/><?php echo $this->__('Price');?>：<span class="old_price"><?php echo $item->getProduct()->getFormatedPrice();?></span></div>
+
+                    </dd>
+
+                </dl>
+			<li>
+			<?php endforeach;?>
+        </ul>
+        <div class="exchange_totals price-box">
+            <label><?php echo $this->__('Available Points');?>：</label> <span
+                class="available_points price"><?php echo $this->getAvailablePoints();?></span>&nbsp;&nbsp;
+            <label><?php echo $this->__('Has chosen the quantity of a commodity');?>:</label> <span
+                class="items_count price">0</span>&nbsp;&nbsp;
+            <label><?php echo $this->__('Totals points');?>:</label> <span class="items_points price">0</span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+$(function(){
+    $("img[bigpic]").each(function(i){
+        var p = $(this);
+        var strbp = p.attr("bigpic");
+        var bp = $("<div class='bigpic'></div>").appendTo("body").hide();
+        var w = 100;
+        p.mouseover(function(){
+            bp.fadeIn();
+            var offset = p.offset();
+            bp.css("top", offset.top).css("left", offset.left+w+5);
+            if(bp.html()=="")
+                bp.html('<img src="'+p.attr("bigpic")+'" mce_src="'+p.attr("bigpic")+'">');
+        }).mouseout(function(){
+            bp.hide();
+        });
+    });
+});
+    window.setItemsTotal = function($this, flag) {
+        var errorMsg = "<?php echo $this->__('You can be insufficient points of consumption.');?>";
+        var $points = $this.find('.rp_price .r_price');
+        var $totals = $this.parent().parent().parent().find('.exchange_totals');
+        if ($points.size() && $totals.size()) {
+            if ($totals.find('.items_points').size()) {
+                var count = parseInt($totals.find('.items_points')[0].innerHTML);
+                if (isNaN(count)) {
+                    count = 0;
+                }
+                var points = parseInt($points.text());
+                if (isNaN(points)) {
+                    points = 0;
+                }
+
+                var result = count;
+                if (flag) {
+                    result += points;
+                } else {
+                    result -= points;
+                }
+
+                var $availablePoints = $totals.find('.available_points');
+                if ($availablePoints.size()) {
+                    var availablePoints = parseInt($availablePoints[0].innerHTML);
+                    if (isNaN(availablePoints)) {
+                        availablePoints = 0;
+                    }
+                    if (availablePoints < result) {
+                        alert(errorMsg);
+                        return false;
+                    }
+                }
+
+                if (result < 0) {
+                    alert(errorMsg);
+                    return false;
+                }
+                $totals.find('.items_points').text(result);
+            }
+          
+            if ($totals.find('.items_count').size()) {
+                var count = parseInt($totals.find('.items_count')[0].innerHTML);
+                if (isNaN(count)) {
+                    acount = 0;
+                }
+
+                var result = count;
+                if (flag) {
+                    result += 1;
+                } else {
+                    result -= 1;
+                }
+
+                if (result < 0) {
+                    alert(errorMsg);
+                    return false;
+                }
+               /// alert(result);
+                $totals.find('.items_count').text(result);
+            }
+        }
+        return true;
+    };
+
+    $("#exchange_items li .item .bnt").toggle(
+   		function() {
+        	if (isLogin() && setItemsTotal($(this).parent('.item'), true)) {
+            	$(this).find('input:[name="exchange\[\]"]').attr('checked', true);
+                $(this).parent().addClass("selected");
+            }
+        },
+        function() {
+            if (isLogin() && setItemsTotal($(this).parent('.item'), false)) {
+                $(this).find('input:[name="exchange\[\]"]').attr('checked', false);
+                $(this).parent().removeClass("selected");
+            }
+        }
+    );
+    //]]>
+</script>
+
+<?php if ($this->isLogin()):?>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var countryRegions = <?php echo $this->helper('directory')->getRegionJson();?>;
+    var regionCitys = <?php echo $this->helper('directory')->getCityJson();?>;
+    var cityAreas = <?php echo $this->helper('directory')->getAreaJson();?>;
+
+    window.setAddressName = function() {
+        $("#region").val($("#region_id").find('option[value="' + $("#region_id").val() + '"]').text());
+        $("#city").val($("#city_id").find('option[value="' + $("#city_id").val() + '"]').text());
+        $("#area").val($("#area_id").find('option[value="' + $("#area_id").val() + '"]').text());
+    };
+
+    window.regionChange = function(countryId) {
+        if (!countryId) {
+            countryId = $("#country_id").val();
+        }
+        if (countryRegions[countryId]) {
+            var html = '';
+            $.each(countryRegions[countryId], function(key, item) {
+                html += '<option value="' + key + '">' + item.name + '</option>';
+            });
+            $("#region_id").html(html).trigger('change').show();
+        } else {
+            $("#region_id").empty();
+            $("#city_id").empty().hide();
+            $("#area_id").empty().hide();
+        }
+        setAddressName();
+    };
+
+    window.cityChange = function(regionId) {
+        if (!regionId) {
+            regionId = $("#region_id").val();
+        }
+        if (regionCitys[regionId]) {
+            var html = '';
+            $.each(regionCitys[regionId], function(key, item) {
+                html += '<option value="' + key + '">' + item.name + '</option>';
+            });
+            $("#city_id").html(html).trigger('change').show();
+        } else {
+            $("#city_id").empty().hide();
+            $("#area_id").empty().hide();
+            $("#city").attr('type', 'text');
+        }
+        setAddressName();
+    };
+
+    window.areaChange = function(cityId) {
+        if (!cityId) {
+            cityId = $("#city_id").val();
+        }
+        if (cityAreas[cityId]) {
+            var html = '';
+            $.each(cityAreas[cityId], function(key, item) {
+                html += '<option value="' + key + '">' + item.name + '</option>';
+            });
+            $("#area_id").html(html).show();
+        }
+        setAddressName();
+    };
+    //]]>
+</script>
+<div class="address_cont" style="display: block;">
+    <div class="address_title"><span class="title"><?php echo $this->__('2.收货信息');?></span></div>
+    <div class="cont">
+        <ul class="form_list">
+            <li><span class="label"><?php echo $this->__('Shipped to Name');?>：</span>
+
+                <div>
+                    <input name="name" type="text" class="input-text" value="<?php echo $this->getName();?>"
+                           validata="required:true,minLength:2"/>
+                    <span class="prompt-msg" message="<?php echo $this->__('Please enter a name');?>"></span>
+                </div>
+            </li>
+            <li style="display:none">
+                <input type="hidden" name="customer_address_id" value="<?php echo $this->getCustomerAddressId();?>"/>
+            </li>
+            <li style="display:none">
+                <?php if ($this->getCountryMore()): ?>
+                <span class="label"><?php echo $this->__('Country');?>：</span>
+                <div><?php echo $this->getCountryHtmlSelect();?></div>
+                <?php else: ?>
+                <input id="country_id" name="country_id" type="hidden" value="<?php echo $this->getCountryId();?>"/>
+                <?php endif;?>
+                <script type="text/javascript">
+                    $(function() {
+                        $("#country_id").change(
+                                function() {
+                                    regionChange();
+                                }).trigger('change');
+                    <?php if ($countryId = $this->getCountryId()): ?>
+                        $("#country_id").val("<?php echo $countryId;?>").trigger('change');
+                        <?php endif;?>
+                    });
+                </script>
+            </li>
+            <li><span class="label"><?php echo $this->__('State/Province');?>：</span>
+
+                <div id="address-item"> <span>
+                                <select id="region_id" name="region_id" validata="required:true">
+                                </select>
+                                <input id="region" name="region" type="hidden"
+                                       value="<?php echo $this->getRegion();?>"/>
+                                <span class="prompt-msg"></span> </span> <span>
+                                <select id="city_id" name="city_id">
+                                      <option>请选择</option>
+                                </select>
+                                <input id="city" name="city" type="hidden" value="<?php echo $this->getCity();?>"
+                                       validata="required:true"/>
+                                <span class="prompt-msg"
+                                      message="<?php echo $this->__('Please enter city');?>"></span> </span> <span>
+                                <select id="area_id" name="area_id">
+                                    <option>请选择</option>
+                                </select>
+                                <input id="area" name="area" type="hidden" value="<?php echo $this->getArea();?>"/>
+                                </span></div>
+                <script type="text/javascript">
+                    $(function() {
+                        $("#region_id").change(
+                                function() {
+                                    cityChange();
+                                }).trigger('change');
+                        $("#city_id").change(
+                                function() {
+                                    areaChange();
+                                }).trigger('change');
+                        $("#area_id").change(function() {
+                            setAddressName();
+                        });
+
+                    <?php if ($regionId = $this->getRegionId()): ?>
+                        $("#region_id").val('<?php echo $regionId;?>').trigger('change');
+                        <?php endif;?>
+                    <?php if ($cityId = $this->getCityId()): ?>
+                        $("#city_id").val('<?php echo $cityId;?>').trigger('change');
+                        <?php endif;?>
+                    <?php if ($areaId = $this->getAreaId()): ?>
+                        $("#area_id").val('<?php echo $areaId;?>').trigger('change');
+                        <?php endif;?>
+                    });
+                </script>
+            </li>
+            <li><span class="label"><?php echo $this->__('Shipping Address');?>：</span>
+
+                <div>
+                    <textarea cols="60" rows="3" id="street" name="street" class="input-text"
+                              validata="required:true"><?php echo $this->getStreet();?></textarea>
+                        <span class="prompt-msg"
+                              message="<?php echo $this->__('Please enter your delivery address');?>"></span>
+                </div>
+            </li>
+            <li><span class="label"><?php echo $this->__('Zip/Postal Code');?>：</span>
+
+                <div>
+                    <input name="postcode" type="text" class="input-text" value="<?php echo $this->getPostcode();?>"
+                           validata="number:true"/>
+                    <span class="prompt-msg"
+                          message="<?php echo $this->__('Please enter your zip code receiving area');?>"></span></div>
+            </li>
+            <li>
+                <span class="label"><?php echo $this->__('Telephone');?>：</span>
+
+                <div>
+                    <input name="telephone" type="text" class="input-text" value="<?php echo $this->getTelephone();?>"
+                           validata="number:true"/>
+                        <span class="prompt-msg"
+                              message="<?php echo $this->__('Please enter your contact Phone');?>"></span>
+                </div>
+            </li>
+            <li>
+                <span class="label"><?php echo $this->__('Phone');?>：</span>
+
+                <div>
+                    <input name="fax" type="text" class="input-text" value="<?php echo $this->getFax();?>"
+                           validata="number:11"/>
+                    <span class="prompt-msg" message="<?php echo $this->__('Please enter your contact Fax');?>"></span>
+                </div>
+            </li>
+            <div class="error"
+                 style="display:none;text-align:left;padding:2px 5px;border:2px solid red;margin-bottom:5px;"></div>
+        </ul>
+    </div>
+</div>
+
+<div class="exchange_bill">
+    <input class="exchange_comp_bnt submit-button" align="absmiddle" type="submit" value=""/>
+    <br/> <span
+        style="color:red;">* </span><?php echo $this->__('Please carefully check your exchange information, according to a needless trouble.');?>
+    &nbsp;&nbsp;
+</div>
+
+<?php endif;?>
+
+</form>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    $(function() {
+        makingware.form.getInstance('#exchange-form', {
+            error: {
+                required: '<?php echo Mage::helper('core')->__('Required Fields');?>',
+                minLength: '<?php echo Mage::helper('core')->__('At least %s characters');?>',
+                maxLength: '<?php echo Mage::helper('core')->__('Up to %s characters');?>',
+                number1: '<?php echo Mage::helper('core')->__('Must be a number');?>',
+                number2: '<?php echo Mage::helper('core')->__('Must be %s digits');?>',
+                regular: '<?php echo Mage::helper('core')->__('Invalid Input');?>',
+                url: '<?php echo Mage::helper('core')->__('Invalid %s address');?>',
+                email: '<?php echo Mage::helper('core')->__('Invalid %s address');?>',
+                ip: '<?php echo Mage::helper('core')->__('Invalid %s address');?>'
+            }
+        }).submit(function() {
+            var $this = $(this);
+            if (isLogin() && $this.data('this').isValidata()) {
+                var $errorTag = $this.find('.error').hide();
+                if (!($this.find('input:[name="telephone"]').val()) && !($this.find('input:[name="fax"]').val())) {
+                   if ($errorTag.size()) {
+                       $this.find('input:[name="telephone"], input:[name="fax"]').addClass("error");
+                   }
+                   return false;
+                }
+                return true;
+            }
+            return false;
+        });
+    });
+    //]]>
+</script>

@@ -1,0 +1,13 @@
+<?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order', $this->getOrder())): ?>
+<script type="text/javascript">
+//<![CDATA[
+function giftMessageToogle(giftMessageIdentifier)
+{
+    var container = $('#order-item-gift-message-'+giftMessageIdentifier);
+		container.toggle();		
+    return false;
+}
+//]]>
+</script>
+<?php endif; ?>
+    <?php echo $this->getChildHtml('creditmemo_items') ?>

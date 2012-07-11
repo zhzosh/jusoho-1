@@ -1,0 +1,41 @@
+<div class="block block-account">
+	<div class="block-title"> <strong><span><?php echo $this->__('My Account'); ?></span></strong> </div>
+	<div class="block-content">
+		<?php $_links = $this->getLinks(); //print_r($_links); ?>
+		<dl class="one">
+			<dt>
+				<ul>
+					<li<?php if ($this->isActive($_links['account'])) { echo ' class="current"'; } ?>><a href="<?php echo $_links['account']->getUrl(); ?>"><?php echo $_links['account']->getLabel(); ?></a></li>
+				</ul>
+			</dt>
+		</dl>
+		<dl class="two">
+			<dt><?php echo $this->__('Transaction management');?></dt>
+			<dd>
+				<ul>
+					<li class="<?php if ($this->isActive($_links['orders'])) { echo 'current'; } ?> last"><a href="<?php echo $_links['orders']->getUrl(); ?>"><?php echo $_links['orders']->getLabel(); ?></a></li>
+					<li class="<?php if ($this->isActive($_links['address_book'])) { echo 'current'; } ?>"><a href="<?php echo $_links['address_book']->getUrl(); ?>"><?php echo $_links['address_book']->getLabel(); ?></a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="three">
+			<dt><?php echo $this->__('Interactive edition piece');?></dt>
+			<dd>
+				<ul>
+					<li class="<?php if ($this->isActive($_links['reviews'])) { echo 'current'; } ?>"><a href="<?php echo $_links['reviews']->getUrl(); ?>"><?php echo $_links['reviews']->getLabel(); ?></a></li>
+					<li<?php if ($this->isActive($_links['viewproductalert'])) { echo ' class="current"'; } ?>><a href="<?php echo $_links['viewproductalert']->getUrl(); ?>"><?php echo $_links['viewproductalert']->getLabel(); ?></a></li>
+					<li<?php if ($this->isActive($_links['newsletter'])) { echo ' class="current"'; } ?>><a href="<?php echo $_links['newsletter']->getUrl(); ?>"><?php echo $_links['newsletter']->getLabel(); ?></a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="four last">
+			<dt><?php echo $this->__('Personal information');?></dt>
+			<dd>
+				<ul>
+					<li<?php if ($this->isActive($_links['account_edit'])) { echo ' class="current"'; } ?>><a href="<?php echo $_links['account_edit']->getUrl(); ?>"><?php echo $_links['account_edit']->getLabel(); ?>/<?php echo $this->__('Change Password');?></a></li>
+					<li class="<?php if ($this->isActive($_links['wishlist'])) { echo 'current'; } ?>"><a href="<?php echo $_links['wishlist']->getUrl(); ?>"><?php echo $_links['wishlist']->getLabel(); ?></a></li>
+				</ul>
+			</dd>
+		</dl>
+	</div>
+</div>

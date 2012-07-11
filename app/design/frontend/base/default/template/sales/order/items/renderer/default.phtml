@@ -1,0 +1,52 @@
+
+<?php $_item = $this->getItem() ?>
+<tr class="border" id="order-item-row-<?php echo $_item->getId() ?>">
+    <td><h3 class="product-name"><a href="<?php echo $_item->getProductUrl();?>" target="_blank"><?php echo $this->htmlEscape($_item->getName()) ?></a></h3>
+        <?php if($_options = $this->getItemOptions()): ?>
+        <dl class="item-options">
+        <?php foreach ($_options as $_option) : ?>
+            <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+            <?php if (!$this->getPrintStatus()): ?>
+                <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>>
+                    <?php echo $_formatedOptionValue['value'] ?>
+                    <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                    <div class="truncated_full_value">
+                        <dl class="item-options">
+                            <dt><?php echo $this->htmlEscape($_option['label']) ?></dt>
+                            <dd><?php echo $_formatedOptionValue['full_view'] ?></dd>
+                        </dl>
+                    </div>
+                    <?php endif; ?>
+                </dd>
+            <?php else: ?>
+                <dd><?php echo $this->htmlEscape( (isset($_option['print_value']) ? $_option['print_value'] : $_option['value']) ) ?></dd>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </dl>
+        <?php endif; ?>
+        <?php echo $this->htmlEscape($_item->getDescription()) ?>
+        <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
+            <a href="#" id="order-item-gift-message-link-<?php echo $_item->getId() ?>" class="gift-message-link" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>')"><?php echo $this->__('Gift Message') ?></a>
+        <?php endif; ?>
+    </td>
+    <td><?php echo $this->htmlEscape(Mage::helper('core/string')->splitInjection($this->getSku())) ?></td>
+    <td> <?php echo $this->getOrder()->formatPrice($this->getItem()->getPrice()) ?></td>
+    <td>
+        <span class="nobr">
+                <?php if ($_item->getQtyOrdered() > 0): ?>
+            <?php echo $this->__('Ordered'); ?>: <strong><?php echo $_item->getQtyOrdered()*1 ?></strong>
+        <?php endif; ?>
+        <?php if ($this->getItem()->getQtyShipped() > 0): ?>
+            <?php echo $this->__('Shipped'); ?>: <strong><?php echo $_item->getQtyShipped()*1 ?></strong>
+        <?php endif; ?>
+        <?php if ($this->getItem()->getQtyCanceled() > 0): ?>
+            <?php echo $this->__('Canceled'); ?>: <strong><?php echo $_item->getQtyCanceled()*1 ?></strong>
+        <?php endif; ?>
+        <?php if ($this->getItem()->getQtyRefunded() > 0): ?>
+            <?php echo $this->__('Refunded'); ?>: <strong><?php echo $_item->getQtyRefunded()*1 ?></strong>
+        <?php endif; ?>
+        </span>
+    </td>
+    <td><?php echo $this->getOrder()->formatPrice($_item->getRowTotal()) ?></td>
+</tr>

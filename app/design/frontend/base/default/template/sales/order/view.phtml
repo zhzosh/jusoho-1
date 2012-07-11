@@ -1,0 +1,50 @@
+
+<?php if ($this->helper('giftmessage/message')->getIsMessagesAvailable('items', $this->getOrder())): ?>
+<script type="text/javascript">
+//<![CDATA[
+function giftMessageToogle(giftMessageIdentifier)
+{
+    var container = $('#order-item-gift-message-'+giftMessageIdentifier);
+		container.toggle();		
+    return false;
+}
+//]]>
+</script>
+<?php endif; ?>
+<?php  $_order = $this->getOrder() ?>
+
+    <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order', $_order) && $_order->getGiftMessageId()): ?>
+    <div class="order-gift-message order_row">
+        <h6><?php echo $this->__('Gift Message for this Order') ?></h6>
+        <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_order); ?>
+        <dl class="gift-message">
+            <dt><strong><?php echo $this->__('From:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
+            <dt><strong><?php echo $this->__('To:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
+            <dd><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_order) ?></dd>
+        </dl>
+    </div>
+    <?php endif; ?>
+    
+<div class="orederlist">
+    <h2><?php echo $this->__('商品清单') ?>
+        <?php if ($_order->getTracksCollection()->count()) : ?>
+            <span class="separator">|</span> <a href="#" title=""><?php echo $this->__('Track your order') ?></a><iframe frameborder="0" src="<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>"></iframe>
+        <?php endif; ?>
+    </h2>
+
+    <?php echo $this->getChildHtml('order_items') ?>
+
+    <?php $_history = $this->getOrder()->getVisibleStatusHistory() ?>
+    <?php if (count($_history)): ?>
+    <div class="order-about">
+        <h2><?php echo $this->__('About Your Order') ?></h2>
+        <dl>
+            <?php foreach ($_history as $_historyItem): ?>
+                <dt><?php echo $this->formatDate($_historyItem->getCreatedAtStoreDate(), 'medium', true) ?></dt>
+                <dd><?php echo $this->escapeHtml($_historyItem->getComment()) ?></dd>
+            <?php endforeach; ?>
+        </dl>
+    </div>
+    <?php endif; ?>
+
+

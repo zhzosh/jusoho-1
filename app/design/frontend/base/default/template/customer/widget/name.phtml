@@ -1,0 +1,5 @@
+<label class="label-like"><?php echo $this->__('Name');?></label>
+<div class="input-box">
+	<input type="text" id="<?php echo $this->getFieldId('name')?>" name="<?php echo $this->getFieldName('name')?>" value="<?php echo $this->htmlEscape($this->getObject()->getName()) ?>" class="input-text" <?php echo $this->getFieldParams() ?> validata="required:true,minLength:2"/>
+	<span class="prompt-msg" message="<?php echo $this->__('Please input your name.');?>"></span>
+</div>

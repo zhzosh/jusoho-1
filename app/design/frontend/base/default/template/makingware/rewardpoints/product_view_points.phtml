@@ -1,0 +1,5 @@
+<?php if ($this->getActive() && $this->getPoints() > 0):?>
+	<div class="points">
+		<span class="label"><?php echo sprintf($this->__('Buy can get <strong>%s</strong> points'), $this->getPoints());?></span>
+    </div> 
+<?php endif;?>

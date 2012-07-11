@@ -1,0 +1,199 @@
+<div class="account-create clearfix">
+	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="legend"><img src="<?php echo $this->getSkinUrl('') ?>images/title-register.png" alt="<?php echo $this->__('Create an Account');?>">
+</h2>
+<?php echo $this->getChildHtml('form_fields_before')?>
+<form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="register-form">
+	<div class="fieldset clearfix">
+		<input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
+		<input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
+		<div class="reg_info">
+            <h2><?php echo $this->__('Why register as a member?');?></h2>
+		 <p><?php echo $this->__('By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.') ?></p>
+	</div>
+		<ul class="form_list">
+			<?php if($this->allowShowUsername()):?>
+			<li class="fields">
+				<label for="username" class="label-like"><?php echo $this->__('Username');?><span class="required">*</span></label>
+				<div class="input-box">
+					<input type="text" name="username" id="username" value="<?php echo $this->htmlEscape($this->getFormData()->getUserName()) ?>" class="input-text" validata="required:true,username:true" />
+					<span class="prompt-msg" message="<?php echo $this->__('Please enter your username.');?>"></span>
+				</div>
+			</li>
+			<?php endif ?>
+			<li class="fields">
+				<label for="email" class="label-like"><?php echo $this->__('Register email address');?><span class="required">*</span></label>
+				<div class="input-box">
+					<input type="text" name="email" id="email" value="<?php echo $this->htmlEscape($this->getFormData()->getEmail()) ?>" class="input-text" validata="required:true,email:true" />
+					<span class="prompt-msg" message="<?php echo $this->__('Please enter your email.');?>"></span>
+				</div>
+			</li>
+			
+			<?php if($this->allowShowPhone()):?>
+			<li class="fields">
+				<label for="phone" class="label-like"><?php echo $this->__('Phone');?><span class="required">*</span></label>
+				<div class="input-box">
+					<input type="text" name="phone" id="phone" value="<?php echo $this->htmlEscape($this->getFormData()->getUserPhone()) ?>" class="input-text" validata="required:true" />
+					<span class="prompt-msg" message="<?php echo $this->__('Please enter your phone.');?>"></span>
+				</div>
+			</li>
+			<?php endif ?>
+			<li class="fields">
+				<label for="password" class="label-like"><?php echo $this->__('Password');?><span class="required">*</span></label>
+				<div class="input-box">
+					<input type="password" name="password" id="password" title="<?php echo $this->__('Password');?>" class="input-text" validata="required:true,minLength:6" />
+					<span class="prompt-msg" message="<?php echo $this->__('Please enter a password at least %s characters.', 6);?>"></span>
+				</div>
+			</li>
+			<li class="fields">
+				<label for="confirmation" class="label-like"><?php echo $this->__('Confirm Password');?><span class="required">*</span></label>
+				<div class="input-box">
+					<input type="password" name="confirmation" title="<?php echo $this->__('Confirm Password');?>" id="confirmation" class="input-text" validata="required:true,minLength:6,method:checkPassword" />
+					<span class="prompt-msg" message="<?php echo $this->__('Please make sure your passwords match.');?>"></span>
+				</div>
+			</li>
+
+			<li class="fields">
+				<?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->toHtml();?>
+			</li>
+			<?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+			<?php if ($_dob->isEnabled()): ?>
+			<li class="fields"><?php echo $_dob->setDate($this->getFormData()->getDob())->toHtml() ?></li>
+			<?php endif ?>
+			<?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+			<?php if ($_gender->isEnabled()): ?>
+			<li class="fields"><?php echo $_gender->setGender($this->getFormData()->getGender())->toHtml() ?></li>
+			<?php endif ?>
+			<?php if($this->getShowAddressFields()): ?>
+			<input type="hidden" name="create_address" value="1" />
+			<li class="fields">
+				<label for="company" class="label-like"><?php echo $this->__('Company') ?></label>
+				<div class="input-box">
+					<input type="text" name="company" id="company" value="<?php echo $this->htmlEscape($this->getFormData()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" class="input-text" />
+				</div>
+			</li>
+			<li class="fields">
+				<label for="telephone" class="label-like"><?php echo $this->__('Telephone') ?></label>
+				<div class="input-box">
+					<input type="text" name="telephone" id="telephone" value="<?php echo $this->htmlEscape($this->getFormData()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text required-entry" />
+				</div>
+			</li>
+			<li class="fields">
+				<label for="street_1" class="label-like"><?php echo $this->__('Street Address') ?></label>
+				<div class="input-box">
+					<input type="text" name="street[]" value="<?php echo $this->htmlEscape($this->getFormData()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="input-text required-entry" />
+				</div>
+			</li>
+			<?php for ($_i=2, $_n=$this->helper('customer/address')->getStreetLines(); $_i<=$_n; $_i++): ?>
+			<li class="fields">
+				<div class="input-box">
+					<input type="text" name="street[]" value="<?php echo $this->htmlEscape($this->getFormData()->getStreet($_i)) ?>" title="<?php echo $this->__('Street Address '.$_i) ?>" id="street_<?php echo $_i?>" class="input-text" />
+				</div>
+			</li>
+			<?php endfor ?>
+			<li class="fields">
+				<label for="city" class="label-like"><?php echo $this->__('City') ?></label>
+				<div class="input-box">
+					<input type="text" name="city" value="<?php echo $this->htmlEscape($this->getFormData()->getCity()) ?>" title="<?php echo $this->__('City') ?>" class="input-text required-entry" id="city" />
+				</div>
+			<label for="region_id" class="label-like"><?php echo $this->__('State/Province') ?></label>
+			<div class="input-box">
+				<select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
+					<option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+				</select>
+				<input type="text" id="region" name="region" value="<?php echo $this->htmlEscape($this->getRegion()) ?>" title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none;" />
+			</div>
+			</li>
+			<li class="fields">
+				<label for="zip" class="label-like"><?php echo $this->__('Zip/Postal Code') ?></label>
+				<div class="input-box">
+					<input type="text" name="postcode" value="<?php echo $this->htmlEscape($this->getFormData()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="input-text validate-zip-international required-entry" />
+				</div>
+			</li>
+			<li class="fields">
+				<label for="country" class="label-like"><?php echo $this->__('Country') ?></label>
+				<div class="input-box"> <?php echo $this->getCountryHtmlSelect() ?> </div>
+			</li>
+			<input type="hidden" name="default_billing" value="1" />
+			<input type="hidden" name="default_shipping" value="1" />
+			<?php endif; ?>
+
+			<?php if ($this->isNewsletterEnabled()): ?>
+			<li class="fields">
+				<div class="input-box">
+					<input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+					<label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>
+				</div>
+			</li>
+			<?php endif ?>
+			<li class="fields">
+				<input type="submit" title="<?php echo $this->__('Submit') ?>" class="submit_bnt" value="注册"/>&nbsp;&nbsp;<a href="<?php echo $this->getBackUrl() ?>">我已经有账号了</a>
+			</li>
+		</ul>
+	</div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+var checkPassword = function(){
+	if($('#password').val()!=$('#confirmation').val()){
+		return {fail:true, msg:"<?php echo $this->__('Two input password does not agree.');?>"};
+	}
+	return true;
+};
+
+$("#email").change(function(){
+	var $this = $(this);
+	if ($this.val()) {
+		$.post('<?php echo $this->getUrl('*/*/checkEmail', array('_secure'=>tue)); ?>', {email: $this.val()}, function(result) {
+			if(result) {
+				result = eval('('+result+')');
+	            if(result.success){return true;}
+			}
+			$this.siblings('.prompt-msg').addClass('prompt-error').append("<?php echo $this->__('This email exists.');?>");
+	    });
+	}
+});
+
+$("#username").change(function(){
+	var $this = $(this);
+	if ($this.val()) {
+		$.post('<?php echo $this->getUrl('*/*/checkUsername', array('_secure'=>tue)); ?>', {username: $this.val()}, function(result) {
+			if(result) {
+				result = eval('('+result+')');
+		    	if(result.success){return true;}
+			}
+			$this.siblings('.prompt-msg').addClass('prompt-error').append("<?php echo $this->__('This username exists.');?>");
+		 });
+	}
+});
+
+$("#phone").change(function(){
+	var $this = $(this);
+	if ($this.val()) {
+		$.post('<?php echo $this->getUrl('*/*/checkUserphone', array('_secure'=>tue)); ?>', {username: $this.val()}, function(result) {
+			if(result) {
+				result = eval('('+result+')');
+		    	if(result.success){return true;}
+			}
+			$this.siblings('.prompt-msg').addClass('prompt-error').append("<?php echo $this->__('This phone exists.');?>");
+		 });
+	}
+});
+
+$(function() {
+	makingware.form.getInstance('#register-form', {
+    	 error: {
+             required: '<?php echo Mage::helper('core')->__('Required Fields');?>',
+             minLength: '<?php echo Mage::helper('core')->__('At least %s characters');?>',
+             number1: '<?php echo Mage::helper('core')->__('Must be a number');?>',
+ 			 number2: '<?php echo Mage::helper('core')->__('Must be %s digits');?>',
+             email: '<?php echo Mage::helper('core')->__('Invalid %s address');?>',
+             username: '<?php echo Mage::helper('core')->__('Invalid user name');?>'
+         }
+	 }).submit(function(){
+		 return $(this).data('this').isValidata();
+	 });
+});
+//]]>
+</script>
+</div>

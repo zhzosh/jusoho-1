@@ -1,0 +1,94 @@
+
+<div id="rew_box">
+	<form action="<?php echo $this->getAction() ?>" method="post" id="review-form">
+		<div class="form-add clearfix"> <?php echo $this->getChildHtml('form_fields_before')?>
+			<h3><?php echo $this->__("You're reviewing:"); ?> <span><?php echo $this->htmlEscape($this->getProductInfo()->getName()) ?></span></h3>
+
+			<?php if( $this->getRatings() && $this->getRatings()->getSize()): ?>
+
+			<span id="input-message-box"></span>
+			<div id="product-reviews" class="ratingsbox">
+				<h4><?php echo $this->__('How do you rate this product?') ?> <em class="required">*</em></h4>
+				<?php foreach ($this->getRatings() as $_rating): ?>
+				<div class="ratings clearfix">
+					<span class="bfL name"><?php echo $this->escapeHtml($_rating->getRatingCode()) ?></span>
+					<span class="star bfL">
+					<?php foreach ($_rating->getOptions() as $_option): ?>
+					<span class="choice">*</span>
+					<?php endforeach; ?>
+					<input type="hidden" class="ratings-post" name="ratings[<?php echo $_rating->getId() ?>]" value="<?php echo $_option->getId(); ?>">
+                    <input type="hidden" class="ratings-base" value="<?php echo pos($_rating->getOptions())->getId(); ?>">
+					</span>
+				</div>
+				<?php endforeach; ?>
+				<script type="text/javascript">
+				<!--
+				$(function() {
+					$('.star').each(function() {
+						var $this = $(this);
+						var $span = $this.find('span');
+						$span.hover(function() {
+							var value = $(this).index();
+							$span.removeClass('choice');
+							$this.find('span:lt('+ (value + 1) +')').addClass('choice');
+                            value += parseInt($this.find('input.ratings-base').val());
+							$this.find('input.ratings-post').val(value);
+						});
+					});
+				});
+				//-->
+				</script>
+			</div>
+			<input type="hidden" name="validate_rating" class="validate-rating" value="5" />
+			<script type="text/javascript">decorateTable('product-review-table')</script>
+			<?php endif; ?>
+			<ul class="form-list">
+				<li>
+					<label for="nickname_field"><?php echo $this->__('Nickname') ?></label>
+					<div class="input-box">
+						<input type="text" name="nickname" id="nickname_field" class="input-text required-entry" value="<?php echo $this->htmlEscape($data->getNickname()) ?>" validata="required:true" />
+						<span class="prompt-msg" message=""></span>
+					</div>
+				</li>
+				<li>
+					<label for="summary_field"><?php echo $this->__('Summary of Your Review') ?></label>
+					<div class="input-box">
+						<input type="text" name="title" id="summary_field" class="input-text required-entry" value="<?php echo $this->htmlEscape($data->getTitle()) ?>" validata="required:true" />
+						<span class="prompt-msg" message=""></span>
+					</div>
+				</li>
+				<li>
+					<label for="review_field"><?php echo $this->__('Review') ?></label>
+					<div class="input-box">
+						<textarea name="detail" id="review_field" cols="5" rows="3" class="required-entry" validata="required:true"><?php echo $this->htmlEscape($data->getDetail()) ?></textarea>
+						<span class="prompt-msg" message=""></span>
+					</div>
+				</li>
+                <?php if ($this->canShowSecureCode()):?>
+                <li>
+                    <div class="input-box">
+                        <input type="text" name="secure_code" id="securecode_field" class="input-text required-entry" style="width: 80px" validata="required:true" /><a tabindex="-1" style="border-style: none" href="#" title="Refresh Image" onclick="document.getElementById('siimage').src = '<?php echo Mage::getUrl('review/product/generalImage/');?>'+'sid='+ Math.random();return false;">
+                     <img id="siimage" src="<?php echo $this->generalImage();?>" style="margin-bottom: -8px"/>
+                    </a>
+                        <span class="prompt-msg" message=""></span>
+                    </div>
+                </li>
+                 <?php endif;?>
+                <li>
+                <button type="submit" title="<?php echo $this->__('Submit Review') ?>" class="button"><span><span><?php echo $this->__('Submit Review') ?></span></span></button>
+                </li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    makingware.form.getInstance('#review-form', {
+    	 error: {
+             required: '<?php echo Mage::helper('core')->__('Required Fields');?>'
+         }
+	 }).submit(function(){
+		 return $(this).data('this').isValidata();
+	 });
+//]]>
+</script>

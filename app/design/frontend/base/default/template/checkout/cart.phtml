@@ -1,0 +1,154 @@
+<div class="cartpage clearfix">
+	<div class="cartpage-title clearfix">
+		<h1 class="flh1"><?php echo $this->__('Shopping Cart') ?></h1>
+		<?php echo $this->getChildHtml('shopcar_guid') ?> </div>
+	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?> <?php echo $this->getChildHtml('form_before') ?>
+	<form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+		<fieldset>
+			<table id="shopping-cart-table" class="data-table cart-table">
+				<col  />
+				<col width="1" />
+				<col width="1" />
+				<col width="1" />
+				<col/>
+				<col/>
+				<thead>
+					<tr>
+						<th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+						<th><?php echo $this->__('Price') ?></th>
+						<th width="80"><?php echo $this->__('Qty') ?></th>
+						<th><?php echo $this->__('Subtotal') ?></th>
+						<?php if($this->getChild('cart_item_header')) echo $this->getChild('cart_item_header')->setBlock($this)->toHtml();?>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($this->getItems() as $_item): ?>
+					<?php echo $this->getItemHtml($_item) ?>
+					<?php endforeach ?>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="<?php if($this->getChild('cart_item_header')) echo 6; else echo 5;?>" class="a-right" valign="middle"><input type="button" value="<?php echo $this->__('Shopping cart was cleared') ?>" class="btn-continue" onclick="location.href='<?php echo $this->getUrl('checkout/cart/clear') ?>'">
+							<?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+							<input id="move-wishlist" type="button" value="<?php echo $this->__('Shopping cart moved to favorites') ?>" class="btn-continue">
+							<?php endif; ?>
+							<div class="totals">
+							<dl><?php echo $this->getChildHtml('totals'); ?></dl>
+							<?php if($this->getChild('cart_item_footer')) echo $this->getChild('cart_item_footer')->setBlock($this)->toHtml();?>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+			<script type="text/javascript">decorateTable('shopping-cart-table')</script>
+		</fieldset>
+	</form>
+	<?php if($this->getContinueShoppingUrl()): ?>
+		<div class="backpro">
+			<a onclick="setLocation('<?php echo $this->getContinueShoppingUrl() ?>')" />&lt;&lt; <?php echo $this->__('Continue Shopping') ?></a>
+		</div>
+	<?php endif; ?>
+
+	<?php if(!$this->hasError()): ?>
+	<ul class="checkout-types">
+		<?php echo $this->getChildHtml('methods') ?>
+		<li class="gre"><?php echo $this->__('If you have coupons/gift card, please use the next check process');?></li>
+	</ul>
+	<?php endif; ?>
+</div>
+<div class="cart-collaterals">
+	<?php echo $this->getChildHtml('crosssell') ?>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+        var itemsLastPrice = [];
+		var itemsLastSymbol;
+		function updatePost() {
+			var form = $('.cartpage form');
+			var url = form.attr('action');
+			var data = form.serialize();
+			$.post(url, data);
+			return false;
+		}
+		function updatePrice() {
+			var total = 0;
+			var symbol;
+			var items = $('#shopping-cart-table tbody tr');
+			items.each(function(index, item) {
+				var $item = $(item);
+				var priceText = $item.find('.cart-price2 .price').text();
+				var re = /^([^\d]*)([\d.,]+)$/g;
+				re.lastIndex=0;
+				if (matches =re.exec(priceText)) {
+					symbol = matches[1];
+					var price = parseFloat(matches[2].replace(',', ''));
+					itemsLastSymbol = symbol;
+					itemsLastPrice[index] = price;
+				} else {
+					symbol = itemsLastSymbol;
+					var price = itemsLastPrice[index];
+				}
+				var amount = parseInt($item.find('.s-amount .qty').val());
+				var subtotal = price * amount;
+				total += subtotal;
+				subtotal = subtotal.toString();
+				if (subtotal.match(/^[\d]+$/)) {
+					subtotal = [subtotal, '.00'].join('');
+				} else {
+					subtotal = subtotal.replace(/([\d]*)\.([\d]{2})[\d]+/g, '$1.$2');
+				}
+				subtotal = formatNumber(subtotal);
+				$item.find('.cart-price1 .price').text([symbol, subtotal].join(''));
+
+			});
+			total = total.toString();
+			if (total.match(/^[\d]+$/)) {
+				total = [total, '.00'].join('');
+			} else {
+				total = total.replace(/([\d]*)\.([\d]{2})[\d]+/g, '$1.$2');
+			}
+			total = formatNumber(total);
+			$('.totle .price').text([symbol, total].join(''));
+		}
+		$('#shopping-cart-table tbody tr .s-amount .qty').change(function() {
+			updatePost();
+			updatePrice();
+		});
+		$('.minus').click(function(){
+			var qty = $(this).siblings('.qty');
+			var amount = parseInt(qty.val()) - 1;
+			if (amount > 0) {
+				qty.val(amount);
+			}
+			updatePost();
+			updatePrice();
+			
+			return false;
+		});
+		$('.plus').click(function(){
+			var qty = $(this).siblings('.qty');
+			qty.val(parseInt(qty.val()) + 1);
+			updatePost();
+			updatePrice();
+			
+			return false;
+		});
+		<?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+		$('#move-wishlist').click(function() {
+			var $this = $(this);
+			var origValue = $this.val();
+			$('[name*=wishlist]').val(1);
+			$this.val("<?php echo $this->__('Are added to the favorites');?>...");
+			$.post('<?php echo $this->getUrl('checkout/cart/updatePost') ?>', $('.cart form').serialize(), function(data){
+				$('[name*=wishlist]').val(0);
+				$this.val("<?php echo $this->__('successfully added!');?>");
+				setTimeout(function() {
+					$this.val(origValue);
+				}, 3000);
+				location.href = '<?php echo $this->getUrl('wishlist'); ?>';
+			});
+		});
+		<?php endif; ?>
+//]]>
+</script>

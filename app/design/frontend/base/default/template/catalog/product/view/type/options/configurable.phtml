@@ -1,0 +1,396 @@
+<?php
+$_product = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+?>
+<?php if ($_product->isSaleable() && count($_attributes)): ?>
+<dl>
+    <?php foreach ($_attributes as $_attribute): ?>
+    <?php if ($_attribute->getProductAttribute()->getFrontendInput() == "color"): ?>
+    <dt><label><?php echo $_attribute->getLabel() ?> : <span id="current_color">未选择</span></label></dt>
+    <dd class="clearfix">
+        <ul class="showColor config-select">
+            <?php foreach ($this->getAllColors() as $optionId => $colorVal) : ?>
+            <li onclick="changeColor(this,this.id);" id="color_<?php echo $optionId;?>">
+           			<div class="colorbox clearfix">
+           			    <?php if (!empty($colorVal['imageUrl'])): ?>
+                           <span>
+                               <img border="0px" alt="<?php echo $colorVal['colorLabel'];?>" width="30" height="30"
+                                src="<?php echo $this->getImageUrl() . $colorVal['imageUrl']; ?>" align="middle"/>
+                              </span>
+                           <?php else: ?>
+                           <span title="<?php echo $colorVal['colorLabel'];?>"
+                                 style="background-color:<?php echo $colorVal['colorValue']?>;"></span>
+                           <?php endif;?>
+                            <em><?php echo $colorVal['colorLabel'];?></em>
+           			</div>
+                <ins class="selected"></ins>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <input type="hidden" name="colorValue">
+        <input type="hidden" name="colorAttrValue" value="<?php echo $_attribute->getAttributeId();?>">
+    </dd>
+      <script type="text/javascript">
+        var colorConfig = <?php echo $this->getColorJson() ?>;
+        var baseProductId = colorConfig.productId;
+
+        $(function() {
+           $('#image').attr('src', "<?php echo $this->getSkinUrl('images/loading.gif') ?>");
+           $('.more-views').hide();
+            var defaultColorId;
+
+            if (GetQueryString('color') == null) {
+                $('ul.showColor li:first').addClass('colorDefault');
+            }
+            else {
+                $('#color_' + GetQueryString('color')).addClass('colorDefault');
+            }
+
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+
+            $('#current_color').html(colorConfig.colors[defaultColorId].colorLabel);
+            $('#check_color').html($('#current_color').html());
+        });
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        function changeColor(obj, optionId) {
+            $('div .quehuo').hide();
+            $('div .add-to-cart').show();
+            $('.colorDefault').removeClass('colorDefault');
+            $(obj).addClass('colorDefault');
+            var defaultColorId;
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+            $('#current_color').html(colorConfig.colors[defaultColorId].colorLabel);
+            $('#check_color').html($('#current_color').html());
+            var defaultSizeId;
+            var defaultSizeIdStr = $('.sizeDefault').attr('id');
+            var defaultSizeIds = defaultSizeIdStr.split('_');
+            defaultSizeId = defaultSizeIds[1];
+            var checkSizeOptionId = defaultSizeId
+            optionId = optionId.split('_');
+            optionId = optionId[1];
+
+            if (checkSizeOptionId) {
+                var price;
+                var oldPrice;
+                var flag = false;
+                var index;
+                var defaultImageUrl;
+
+                for (var key in colorConfig.attributes) {
+                    if (colorConfig.attributes[key]['color'].option_id == optionId && colorConfig.attributes[key]['size'].option_id == checkSizeOptionId && colorConfig.attributes[key].stock == 1) {
+                        flag = true;
+                        index = key;
+                        break;
+                    }
+                }
+
+                if (flag) {
+                    price = colorConfig.attributes[index].price;
+                    oldPrice = colorConfig.attributes[index].oldPrice;
+
+                    $('.type_data .price-box .order-price .price').html(formatPrice(oldPrice));
+                    $('.type_data .price-box .old-price .price').html(formatPrice(oldPrice));
+                    $('.type_data .price-box .special-price .price').html(formatPrice(price));
+                    $('.product-options-bottom .price-box .old-price .price').html(formatPrice(oldPrice));
+                    $('.product-options-bottom .price-box .special-price .price').html(formatPrice(price));
+                    $('#image').attr('src', "<?php echo $this->getSkinUrl('images/loading.gif') ?>");
+                    $('.more-views').hide();
+
+                    $.ajax({
+                        type: "POST",
+                        url:"<?php echo $this->getPostUrl() ?>",
+                        dataType: "html",
+                        data: "product_id=" + index + "&base_product_id=" + baseProductId,
+                        cache: false,
+                        success: function(data) {
+                            $('.product-img-box').html(data);
+                        }
+                    });
+                }
+            }
+
+            $('.disabledSize').removeClass('disabledSize');
+            var defaultSizeId;
+            var defaultSizeIdStr = $('.sizeDefault').attr('id');
+            var defaultSizeIds = defaultSizeIdStr.split('_');
+            defaultSizeId = defaultSizeIds[1];
+            $('#current_size').html(sizeConfig.sizes[defaultSizeId].sizeValue);
+            var defaultColorId;
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+
+            $('[name="colorValue"]').val(defaultColorId);
+            $('[name="sizeValue"]').val(defaultSizeId);
+            disabledSomeSizes();
+            $('.button.btn-cart').removeAttr('disabled');
+
+            if ($('.sizeDefault.disabledSize').html()) {
+                $('.button.btn-cart').attr('disabled', 'disabled');
+                $('div .quehuo').show();
+                $('div .add-to-cart').hide();
+            }
+
+        }
+
+        function disabledSomeSizes() {
+            var disabledSizes = new Array();
+            var enableSizes = new Array();
+            var defaultColorId;
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+
+            var checkColorOptionId = defaultColorId;
+
+            for (var i in colorConfig.sizes) {
+                var flag = false;
+
+                for (var key in colorConfig.attributes) {
+                    if (colorConfig.attributes[key]['color'].option_id == checkColorOptionId && colorConfig.attributes[key]['size'].option_id == i && colorConfig.attributes[key].stock == 1) {
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if (flag) {
+                    enableSizes.push(i);
+                }
+                else {
+                    disabledSizes.push(i);
+                }
+            }
+
+            for (var j in disabledSizes) {
+                $('#size_' + disabledSizes[j]).addClass('disabledSize');
+
+            }
+
+            for (var k in enableSizes) {
+                $('#size_' + enableSizes[k]).removeClass('disabledSize');
+            }
+
+            if ($('.sizeDefault.disabledSize').html()) {
+                $('.button.btn-cart').attr('disabled', 'disabled');
+                $('div .quehuo').show();
+                $('div .add-to-cart').hide();
+            }
+        }
+    </script>
+        <?php elseif ($_attribute->getProductAttribute()->getFrontendInput() == "size"): ?>
+    <dt><label><?php echo $_attribute->getLabel() ?> : <span id="current_size">未选择</span></label></dt>
+    <dd class="clearfix">
+        <ul class="showSize config-select" id="showSize">
+            <?php foreach ($this->getAllSizes() as $optId => $sizeValue) : ?>
+            <li onclick="changeSize(this,this.id);" id="size_<?php echo $optId;?>">
+                <div class="sizebox">
+                    <span><?php echo $sizeValue['sizeValue'];?></span>
+                </div>
+                <ins class="selected"></ins>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <input type="hidden" name="sizeValue">
+        <input type="hidden" name="sizeAttrValue" value="<?php echo $_attribute->getAttributeId();?>">
+
+        <div style="clear: both;"></div>
+    </dd>
+    <dd class="order_select">
+        已选择："<span id="check_color"></span>","<span id="check_size"></span>"
+    </dd>
+    <script type="text/javascript">
+        var sizeConfig = <?php echo $this->getColorJson() ?>;
+
+        $(function() {
+            var size_option_id;
+            var index = 0;
+            var price;
+            var defaultImageUrl;
+            var imageUrl;
+            var baseProductId = sizeConfig.productId;
+            var defaultColorId;
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+            $("<div class='quehuo' style='color:red;'>该商品已售完，请选购其它色码。</div>").appendTo('.product-options-bottom').hide();
+
+            if (GetQueryString('color') == null) {
+                for (var key in sizeConfig.attributes) {
+                    if (sizeConfig.attributes[key]['color'].option_id == defaultColorId) {
+                        size_option_id = sizeConfig.attributes[key]['size'].option_id;
+                        index = key;
+                        break;
+                    }
+                }
+            }
+            else {
+                for (var key in sizeConfig.attributes) {
+                    if (sizeConfig.attributes[key]['color'].option_id == GetQueryString('color')) {
+                        size_option_id = sizeConfig.attributes[key]['size'].option_id;
+                        index = key;
+                        break;
+                    }
+                }
+            }
+
+            $('#size_' + size_option_id).addClass('sizeDefault');
+            price = sizeConfig.attributes[index].price;
+
+            $.ajax({
+                type: "POST",
+                url:"<?php echo $this->getPostUrl() ?>",
+                dataType: "html",
+                data: "product_id=" + index + "&base_product_id=" + baseProductId,
+                cache: false,
+                success: function(data) {
+                    $('.product-img-box').html(data);
+                    $('.product-img-box').show();
+                }
+            });
+
+            defaultColorIdStr = $('.colorDefault').attr('id');
+            defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+
+            var defaultSizeId;
+            var defaultSizeIdStr = $('.sizeDefault').attr('id');
+            var defaultSizeIds = defaultSizeIdStr.split('_');
+            defaultSizeId = defaultSizeIds[1];
+
+            $('#current_size').html(sizeConfig.sizes[defaultSizeId].sizeValue);
+            $('#check_size').html($('#current_size').html());
+            $('[name="colorValue"]').val(defaultColorId);
+            $('[name="sizeValue"]').val(defaultSizeId);
+
+            disabledSomeSizes();
+
+            if ($('.sizeDefault.disabledSize').html()) {
+                $('.button.btn-cart').attr('disabled', 'disabled');
+                $('div .quehuo').show();
+                $('div .add-to-cart').hide();
+            }
+
+        });
+
+        function changeSize(obj, optionId) {
+            $('div .quehuo').hide();
+            $('div .add-to-cart').show();
+            $('.sizeDefault').removeClass('sizeDefault');
+            $(obj).addClass('sizeDefault');
+            var defaultSizeId;
+            var defaultSizeIdStr = $('.sizeDefault').attr('id');
+            var defaultSizeIds = defaultSizeIdStr.split('_');
+            defaultSizeId = defaultSizeIds[1];
+
+            $('#current_size').html(sizeConfig.sizes[defaultSizeId].sizeValue);
+            $('#check_size').html($('#current_size').html());
+            var defaultColorId;
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+
+            var checkColorOptionId = defaultColorId;
+            optionId = optionId.split('_');
+            optionId = optionId[1];
+
+            if (checkColorOptionId) {
+                var price;
+                var oldPrice;
+                var flag = false;
+                var index;
+                var defaultImageUrl;
+
+                for (var key in sizeConfig.attributes) {
+                    if (sizeConfig.attributes[key]['color'].option_id == checkColorOptionId && sizeConfig.attributes[key]['size'].option_id == optionId && sizeConfig.attributes[key].stock == 1) {
+                        flag = true;
+                        index = key;
+                        break;
+                    }
+                }
+
+                if (flag) {
+                    price = colorConfig.attributes[index].price;
+                    oldPrice = colorConfig.attributes[index].oldPrice;
+                    $('.type_data .price-box .order-price .price').html(formatPrice(oldPrice));
+                    $('.type_data .price-box .old-price .price').html(formatPrice(oldPrice));
+                    $('.type_data .price-box .special-price .price').html(formatPrice(price));
+                    $('.product-options-bottom .price-box .old-price .price').html(formatPrice(oldPrice));
+                    $('.product-options-bottom .price-box .special-price .price').html(formatPrice(price));
+                    $('#image').attr('src', "<?php echo $this->getSkinUrl('images/loading.gif') ?>");
+                    $('.more-views').hide();
+
+                    $.ajax({
+                        type: "POST",
+                        url:"<?php echo $this->getPostUrl() ?>",
+                        dataType: "html",
+                        data: "product_id=" + index + "&base_product_id=" + baseProductId,
+                        cache: false,
+                        success: function(data) {
+                            $('.product-img-box').html(data);
+                        }
+                    });
+                }
+            }
+
+            $('.disabledSize').removeClass('disabledSize');
+            var defaultSizeId;
+            var defaultSizeIdStr = $('.sizeDefault').attr('id');
+            var defaultSizeIds = defaultSizeIdStr.split('_');
+            defaultSizeId = defaultSizeIds[1];
+            $('#current_size').html(sizeConfig.sizes[defaultSizeId].sizeValue);
+            var defaultColorId;
+            var defaultColorIdStr = $('.colorDefault').attr('id');
+            var defaultColorIds = defaultColorIdStr.split('_');
+            defaultColorId = defaultColorIds[1];
+            $('[name="colorValue"]').val(defaultColorId);
+            $('[name="sizeValue"]').val(defaultSizeId);
+            disabledSomeSizes();
+            $('.button.btn-cart').removeAttr('disabled');
+
+            if ($('.sizeDefault.disabledSize').html()) {
+                $('.button.btn-cart').attr('disabled', 'disabled');
+                $('div .quehuo').show();
+                $('div .add-to-cart').hide();
+            }
+
+        }
+
+        function formatPrice(price) {
+            price = price.toString();
+
+            if (price.match(/^[\d]+$/)) {
+                price = [price, '.00'].join('');
+            }
+            else {
+                price = price.replace(/([\d]*)\.([\d]{2})[\d]+/g, '$1.$2');
+            }
+
+            return '￥' + price;
+        }
+    </script>
+        <?php  else: ?>
+    <dt><label><?php echo $_attribute->getLabel() ?><span class="required">&nbsp;*</span></label></dt>
+    <dd<?php if ($_attribute->decoratedIsLast) { ?> class="last"<?php }?>>
+        <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"
+                id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+            <option><?php echo $this->__('Choose an Option...') ?></option>
+        </select>
+    </dd>
+    <script type="text/javascript">
+        var spConfig = new Product.Config(<?php echo $this->getJsonConfig() ?>);
+    </script>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</dl>
+<?php endif; ?>

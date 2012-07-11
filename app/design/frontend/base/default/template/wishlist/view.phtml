@@ -1,0 +1,81 @@
+
+<div class="my-wishlist">
+
+        <h1> <?php if ($this->helper('wishlist')->isRssAllow() && $this->hasWishlistItems()): ?>
+            <a href="<?php echo $this->helper('wishlist')->getRssUrl(); ?>" class="link-rss"><?php echo $this->__('RSS Feed') ?></a>
+        <?php endif; ?><?php echo $this->__('My Wishlist') ?></h1>
+
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php if ($this->hasWishlistItems()): ?>
+    <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
+        <fieldset>
+            <?php echo $this->getBlockHtml('formkey')?>
+<table bordercolor="#e3e3e3" border="1" width="100%" class="data-table1" id="wishlist-table">
+                <thead>
+                    <tr>
+                        <th><?php echo $this->__('Product') ?></th>
+                        <th><?php echo $this->__('备注') ?></th>
+                        <th class="a-center"><span class="nobr"><?php echo $this->__('Added On') ?></span></th>
+                        <th class="a-center"><span class="nobr"><?php echo $this->__('Add to Cart') ?></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($this->getWishlistItems() as $item): ?>
+                 <?php
+                        $product = $item->getProduct();
+                        $isVisibleProduct = $product->isVisibleInSiteVisibility();
+                    ?>
+                    <tr>
+                        <td>
+                            <a class="product-image" href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->htmlEscape($item->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->resize(113, 113); ?>" width="113" height="113" alt="<?php echo $this->htmlEscape($item->getName()) ?>" /></a>
+                            <p class="product-name"><a href="<?php echo $this->getProductUrl($item) ?>"><?php echo $this->htmlEscape($item->getName()) ?></a></p>
+                            <?php echo $this->getPriceHtml($product) ?>
+                        </td>
+                        <td>
+                            <textarea name="description[<?php echo $item->getWishlistItemId() ?>]" rows="3" cols="5" onfocus="focusComment(this)" onblur="focusComment(this)" class="textarea_txt"><?php echo $this->hasDescription($item) ? $this->getEscapedDescription($item) : $this->helper('wishlist')->defaultCommentString() ?></textarea>
+                        </td>
+                        <td>
+                            <span class="nobr"><?php echo $this->getFormatedDate($item->getAddedAt()) ?></span>
+                        </td>
+                        <td class="a-center">
+                        <?php if($product->isSaleable()): ?>
+                            <input type="button" title="<?php echo $this->__('Add to Cart') ?>" onclick="setLocation('<?php echo $this->getItemAddToCartUrl($item) ?>')" class="button" value="<?php echo $this->__('Add to Cart') ?>" />
+                        <?php else: ?>
+                            <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                        <?php endif; ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->getItemRemoveUrl($item) ?>" title="<?php echo $this->__('Remove Item') ?>" onclick="return confirmRemoveWishlistItem();" class="btn-remove2"><?php echo $this->__('Remove item')?></a>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('wishlist-table')</script>
+            <div class="buttons-set">
+
+                <button type="submit" onclick="this.name='do'" title="<?php echo $this->__('Update Wishlist') ?>" class="button btn-update"><span><span><?php echo $this->__('Update Wishlist') ?></span></span></button>
+            </div>
+        </fieldset>
+    </form>
+    <?php else: ?>
+        <p><?php echo $this->__('You have no items in your wishlist.') ?></p>
+    <?php endif ?>
+    <script type="text/javascript">
+    //<![CDATA[
+    function confirmRemoveWishlistItem() {
+        return confirm('<?php echo $this->__('Are you sure you want to remove this product from your wishlist?') ?>');
+    }
+
+    function focusComment(obj) {
+        if( obj.value == '<?php echo $this->__('Please, enter your comments...') ?>' ) {
+            obj.value = '';
+        } else if( obj.value == '' ) {
+            obj.value = '<?php echo $this->__('Please, enter your comments...') ?>';
+        }
+    }
+    //]]>
+    </script>
+</div>
+

@@ -1,0 +1,11 @@
+<?php $_product = $this->getProduct() ?>
+
+<?php if($_product->isSaleable()): ?>
+    <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
+<?php else: ?>
+    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Out of stock') ?></span><?php echo $this->getChildHtml('productalert_stock') ?></p>
+<?php endif; ?>
+<?php echo $this->getChildHtml('product_type_data_extra') ?>
+<div class="Pricesss clearfix">
+<?php echo $this->getPriceHtml($_product) ?>
+ <?php echo $this->getChildHtml('productalert_price') ?></div>

@@ -1,0 +1,108 @@
+<style type="text/css">
+<!--
+#rewardpoints-edit .modify span {padding-right:10px;}
+-->
+</style>
+<div id="rewardpoints-edit" class="entry-edit">
+    <div class="entry-edit-head"><h4 class="icon-head head-customer-sales-statistics"><?php echo $this->__('RewardPoints Info') ?></h4></div>
+    <fieldset>
+        <table cellspacing="2" class="box-left">
+        	<tr>
+                <td><strong><?php echo $this->__('Status');?>:</strong></td>
+                <td class="modify">
+                	<span class="status"><?php echo $this->getStatus();?></span>
+                	<span class="editor"><?php echo $this->getStatusHtml();?></span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong><?php echo $this->__('Total Points');?>:</strong></td>
+                <td>
+                	<span class="total_points"><?php echo $this->getTotalPoints()*1;?></span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong><?php echo $this->__('Available Points');?>:</strong></td>
+                <td class="modify">
+                	<span class="available_points"><?php echo $this->getAvailablePoints()*1;?></span>
+                	<span class="editor"><?php echo $this->getAvailablePointsHtml();?></span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong><?php echo $this->__('Used Points');?>:</strong></td>
+                <td class="modify">
+                	<span class="used_points"><?php echo $this->getUsedPoints()*1;?></span>
+                	<span class="editor"><?php echo $this->getUsedPointsHtml();?></span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong><?php echo $this->__('Modify Date');?>:</strong></td>
+                <td>
+                	<span class="modify_date"><?php echo $this->getModifyDate();?></span>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<div class="clear"></div>
+<br/>
+<script type="text/javascript">
+	$("rewardpoints-edit").select('.modify').each(function($this){
+		$this.select('.editor').each(function($editor){
+			$editor.hide().insert('<?php echo $this->getButtomsHtml();?>');
+
+			if ($editor.previous('span[class!=""]')) {
+				$editor.previous('span[class!=""]').observe('click', function(event){
+					//this.hide().next('.editor').show();
+					this.next('.editor').show();
+				});
+		 	}
+
+			if ($editor.select('.cancel').size()) {
+				$editor.select('.cancel')[0].observe('click', function(event){
+					//this.up('.editor').hide().previous('span[class!=""]').show();
+					this.up('.editor').hide();
+				});
+			}
+
+			if ($editor.select('.save').size()) {
+				$editor.select('.save')[0].observe('click', function(event){
+					var $inputEl = $editor.select('input, select[name!=""]');
+					if ($inputEl.size()) {
+						$inputEl = $inputEl[0];
+						if (!$inputEl.name.length) {alert("<?php echo $this->__('Element control error.');?>"); return false;}
+						if (!$inputEl.getValue()) {alert("<?php echo $this->__('This is a required field.');?>"); return false;}
+						if (!/^[0-9]\d*$/.test($inputEl.getValue())) {alert("<?php echo $this->__('Please enter an integer');?>"); return false;}
+						new Ajax.Request("<?php echo $this->getModifyUrl();?>", {
+		        			method: 'post',
+		    		        parameters: $inputEl.name+'='+$inputEl.getValue(),
+		    		        onSuccess: function(transport){
+			    		        var json = transport.responseText.evalJSON();
+		        		        if (json) {
+		        		        	if (json.error) {alert(json.error); return false;}
+			        		        if (json.data) {
+			        		        	$("rewardpoints-edit").select('td > span[class!=""]').each(function($el){
+				        		        	for (var i in json.data) {
+					        		        	if ($el.hasClassName(i)) {$el.update(json.data[i]);}
+					        		        	//var $editEl = $el.next('.editor').select('input, select[name="'+i+'"]');
+					        		        	//if ($editEl.size()) {$editEl[0].setValue(json.data[i]);}
+					        		        }
+				        		        });
+			        		        	//$editor.hide().previous('span[class!=""]').show();
+			        		        	$editor.hide();
+				        		    }
+		    			        }
+		    		        }
+		    		    });
+					}
+				});
+			}
+		});
+		
+ 		$this.observe('mouseover', function(event){
+ 	 		$this.setStyle({backgroundColor: '#278296'});
+ 	 	});
+ 		$this.observe('mouseout', function(event){
+ 			$this.setStyle({backgroundColor: 'transparent'});
+ 	 	});
+ 	});
+</script>

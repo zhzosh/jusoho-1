@@ -1,0 +1,9 @@
+<?php if ($this->getIsActive()):?>
+<div class="points">
+	<dl>
+		<?php foreach ($this->getRules() as $rule):?>
+		<dd><?php echo $this->__('Total Points') ?>: <strong><?php echo sprintf('%d', $rule->getAmount()); ?></strong> </dd>
+		<?php endforeach;?>
+	</dl>
+</div>
+<?php endif;?>

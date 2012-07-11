@@ -1,0 +1,11 @@
+.indexrow { border:1px solid #d8d8d8; margin-top:15px;FLOAT: left; position: relative; display:block; width:960px}
+.indexrow .titles{position:relative; height:56px; border-bottom:1px solid #ddd}
+.indexrow.row1 .titles {background:url(../images/row1-title-bg.png) no-repeat;}
+.indexrow.row2 .titles {background:url(../images/row2-title-bg.png) no-repeat;}
+.indexrow.row3 .titles {background:url(../images/row3-title-bg.png) no-repeat;}
+.indexrow.row1.cont{padding:4px; height:300px;}
+.indexrow.row2.cont{padding:4px; height:300px;}
+.indexrow.row3.cont{padding:4px; height:300px;}
+.index_new_pro .products-grid {border:none}
+.index_new_pro .products-grid li{ width:245px; padding:12px 0}
+.index_new_pro .products-grid li img{width:220px}

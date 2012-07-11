@@ -1,0 +1,16 @@
+<div id="footer" class="clearfix">
+  <div class="container">
+    <div class="bfL footeralert">
+    <?php echo $this->getChildHtml('footer_subscribe') ?>
+            <div class="share">
+        <?php echo $this->getChildHtml('cms_foo_share') ?>
+          </div>
+      </div>
+    <div class="bfL footer-con">
+    	<?php echo $this->getChildHtml('foot_others') ?>
+        <p><?php echo $this->getCopyright() ?></p>
+        <div class="foot_partner"><?php echo $this->getChildHtml('foot_partner') ?></div>
+    </div>
+  </div>
+</div>
+<?php echo $this->getChildHtml('cart_sidebar') ?>

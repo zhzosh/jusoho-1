@@ -1,0 +1,7 @@
+<?php if ($this->isShow()): ?>
+<?php if ($this->isAddPriceAlert()): ?>
+<span class="alert-stock"><a href="<?php echo $this->getProductUnsubscribeUrl() ?>"><?php echo $this->__('Cancel stock alert'); ?></a></span>
+ <?php else:?>
+    <span class="alert-stock"><a href="<?php echo $this->getUrl() ?>"><?php echo $this->__('Sign up to get notified when this product is back in stock'); ?></a></span>
+<?php endif; ?>
+<?php endif; ?>

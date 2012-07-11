@@ -1,0 +1,17 @@
+  <div class="ratings clearfix">
+	<span class="bfL">商品评分：</span>
+	<?php if ($this->getReviewsCount()): ?>	
+        <?php if ($this->getRatingSummary()):?>
+            <div class="rating-box">
+                <div class="rating" style="width:<?php echo $this->getRatingSummary() ?>%"></div>
+            </div>
+        <?php endif;?>
+        <p class="rating-links">
+            <a href="#comment" onclick="javascript:$('#comment').trigger('click');"><?php echo $this->__('%d Review(s)', $this->getReviewsCount()) ?></a>
+            <span class="separator">|</span>
+            <a href="#comment" onclick="javascript:$('#comment').trigger('click');"><?php echo $this->__('Add Your Review') ?></a>
+        </p>
+<?php elseif ($this->getDisplayIfEmpty()): ?>
+    <p class="no-rating"><a href="#comment" onclick="javascript:$('#comment').trigger('click');"><?php echo $this->__('Be the first to review this product') ?></a></p>
+<?php endif; ?>
+</div>

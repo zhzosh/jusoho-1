@@ -1,0 +1,104 @@
+<style type="text/css">
+.showColor li {  float: left; padding-right:5px; list-style-type: none;  background-repeat: no-repeat; background-position: right; display: inline;  }
+.showColor li a {  font-size: 14px; font-weight: bold; text-transform: none; text-decoration: none;  display: block; height: 30px; width: 30px;cursor: pointer;}
+</style>
+<?php $_productCollection=$this->getLoadedProductCollection() ?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+   <div class="products-list" id="products-list">
+    <?php foreach ($_productCollection as $_product): ?>
+        <dl class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?> clearfix">
+            <?php // Product Image ?>
+           <dt class="pic"> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(180); ?>" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" /></a>
+            </dt>
+			<?php // Product description ?>
+            <dd class="product-shop">
+			                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName())?></a></h2>
+
+                    <p class="desc std">
+                        <?php echo $_product->getShortDescription() ?>
+                    </p>
+
+
+            </dd>
+			<dd class="cart">
+			 <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                    <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+			<?php if($_product->isSaleable()): ?>
+                        <p><input type="button" title="<?php echo $this->__('Add to Cart') ?>" class="inputbutton btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')" value="<?php echo $this->__('Add to Cart') ?>" /></p>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+
+					<ul class="add-to-links">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+					</dd>
+        </dl>
+    <?php endforeach; ?>
+    </div>
+    <script type="text/javascript">decorateList('products-list', 'hover')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+<?php $_columnCount = 4 ?>
+    <?php //$_columnCount = $this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <div class="products-grid">
+        <?php endif ?>
+            <dl class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                 <dd>
+                 <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" class="product-image">
+                 <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(150); ?>" width="150" height="150" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+                 </a>
+                 </dd>
+                   <?php if ($this->showColorImage($_product)): ?>
+	               <dd>
+			        <ul class="showColor">
+            		    <?php foreach ($this->getAllColors($_product) as $optionId=>$colorVal) :?>
+           			    <li>
+           				    <a href="<?php echo $_product->getProductUrl().'?color='.$optionId; ?>">
+           				       <?php if(!empty($colorVal['imageUrl'])):?>
+           				       <img border="0px" title="<?php echo $colorVal['colorLabel'];?>" width="30" height="30" src="<?php echo $this->getImageUrl().$colorVal['imageUrl']; ?>"/>
+           				        <?php else:?>
+	                            <span title="<?php echo $colorVal['colorLabel'];?>" style="background-color:<?php echo $colorVal['colorValue']?>;width:30px;height:30px;display:block;"></span>
+           				        <?php endif;?>
+           				    </a>
+	                    </li>
+	                   <?php endforeach; ?>
+	                </ul>
+	              </dd>
+	              <div style="clear: both;"></div>
+		        <?php endif ?>
+                <dd class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></dd>
+                <dd><?php echo $this->getPriceHtml($_product, true) ?></dd>
+            </dl>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </div>
+        <?php endif ?>
+        <?php endforeach ?>
+         <script type="text/javascript">decorateDataList('div.products-grid')</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>

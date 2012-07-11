@@ -1,0 +1,46 @@
+	<?php $_cartQty = $this->getSummaryCount() ?>
+
+	 <?php if ($_cartQty>0): ?>
+			<?php if ($_cartQty==1): ?>
+				<span class="bnt"><?php echo $this->__('<a href="%s">购物车<strong>1</strong>件</a>', $this->getUrl('checkout/cart')) ?></span>
+			<?php else: ?>
+			   <span class="bnt"><?php echo $this->__('<a href="%s">购物车<strong>%s</strong>件</a>', $this->getUrl('checkout/cart'), $_cartQty) ?></span>
+			<?php endif ?>
+	<?php else: ?>
+		<span class="bnt"><?php echo $this->__('<a href="%s">购物车<strong>0</strong>件</a>', $this->getUrl('checkout/cart')) ?></span>
+	<?php endif ?>
+
+	<div class="cart-content">
+	<?php $_items = $this->getRecentItems() ?>
+	<?php if(count($_items)): ?>
+		
+		<?php foreach($_items as $_item): ?>
+			<?php echo $this->getItemHtml($_item) ?>
+		<?php endforeach; ?>
+		
+		<script type="text/javascript">decorateList('cart-sidebar', 'none-recursive')</script>
+	<?php else: ?>
+		<div class="empty"><?php echo $this->__('您的购物车中暂无商品，赶快选择心爱的商品吧！') ?></div>
+	<?php endif ?>
+
+	<?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+
+	<?php if ($_cartQty>0): ?>
+		<div class="total">
+		<p>
+			<?php if ($_cartQty==1): ?>
+				<?php echo $this->__(' 共 <a href="%s">1</a> 件商品', $this->getUrl('checkout/cart')) ?>
+			<?php else: ?>
+			   <?php echo $this->__('共 <a href="%s">%s</a> 件商品.', $this->getUrl('checkout/cart'), $_cartQty) ?>
+			<?php endif ?>&nbsp;&nbsp;&nbsp;
+				金额总计：<?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()) ?>
+		<?php echo $this->getChildHtml('extra_actions') ?>
+		</p>
+		<button type="button" title="<?php echo $this->__('去购物车并结算') ?>" class="btnG" onclick="window.location.href = '<?php echo Mage::helper('checkout')->getCheckoutCartUrl() ?>';"><span><?php echo $this->__('去购物车') ?></span></button>
+	</div>
+	<?php endif ?>
+
+
+	
+	<?php endif ?>
+	</div>

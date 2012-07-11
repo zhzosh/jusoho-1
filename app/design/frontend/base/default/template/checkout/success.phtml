@@ -1,0 +1,76 @@
+<div class="cartpage-title clearfix">
+	<h1 class="flh1">
+		<?php echo $this->__('Order submitted successfully');?>
+	</h1>
+	<?php echo $this->getChildHtml('shopcar_guid');?>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml();?>
+<div class="onepage_success">
+	<h2><?php echo $this->__('Thank you for your patronage! Your order has been successfully submitted.');?>
+		<span><?php echo $this->__('Please have your order number in mind');?> ：
+			<strong>
+				<?php if ($this->canPrint()) :?>
+					<?php echo $this->__('<a href="%s">%s</a>', $this->getViewOrderUrl(), $this->getOrderId()) ?>
+				<?php else :?>
+					<?php echo $this->__('%s', $this->getOrderId()) ?>
+				<?php endif;?>
+			</strong>
+		</span>
+	</h2>
+	<?php $order=$this->getOrder()?>
+	<p class="hight">
+		<?php
+		echo $this->__('You will receive an order confirmation e-mail, the confirmation email will be sent to your mailbox') . '：' .
+			$order->getData('customer_email') .
+			', ' . $this->__('The total amount of your order') . '：'.$order->formatPrice($order->getGrandTotal()) .
+			', ' . $this->__('Method of payment you choose') . '：' . $order->getPayment()->getMethodInstance()->getTitle() . '.';
+		?>
+
+		<?php if ($this->canOnlinePayment()) :?>
+			<span>
+				<a href="<?php echo $order->getPayment()->getMethodInstance()->getOnlinePaymentUrl() ?>" target="_blank" class="pay" ><?php echo $this->__('To pay');?></a>
+			</span>
+		<?php endif;?>
+
+		<?php echo $this->getChildHtml('item');?>
+	</p>
+	<?php if ($this->canPrint()) :?>
+		<p>
+			<?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+		</p>
+	<?php endif;?>
+</div>
+<?php echo $this->__('You can');?> <a href="#" onclick="window.location='<?php echo Mage::getUrl();?>'" ><?php echo $this->__('Back home');?></a>
+<?php echo $this->__('Or');?>
+<a href="<?php echo Mage::getUrl('customer/account') ?>"><?php echo $this->__('User Center');?></a>
+<div id="loadblock" style="display:none;" class="pay_light">
+	<h3><?php echo $this->__('Login Payment Website To Pay');?></h3>
+	<div class="note"><?php echo $this->__('Please Pay In New Website And Choose Your Operation');?></div>
+	<ul class="form-list">
+	<li class="control">
+    	<strong><?php echo $this->__('Pay Successfully');?></strong> <a class="reg" href='<?php echo $this->getReturnUrl();?>'><?php echo $this->__('View Order');?></a>
+	</li>
+	<li class="control">
+		<strong><?php echo $this->__('Pay Unsuccessfully');?></strong> <a class="reg" href='javascript:returnPay()'><?php echo $this->__('Return To Pay');?></a>
+	</li>
+	</ul>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var showDialog = function(){
+        $('#loadblock').dialog({width:630, height: 280, modal: true, close: function(event, ui) {
+                $(this).html();
+            }});
+    }
+ $(function(){
+ 	 $('.pay').click(function() {
+ 	 	 showDialog();
+	});
+ });
+ function returnPay(){
+		$('.ui-dialog-titlebar-close').click();
+ 	}
+
+//]]>
+</script>
+

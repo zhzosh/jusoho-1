@@ -1,0 +1,10 @@
+<?php
+	$_helper = $this->helper('catalog/output');
+	$_product = $this->getProduct();
+?>
+<?php $_description = $this->getProduct()->getDescription(); ?>
+<?php if ($_description): ?>
+    <div class="std">
+        <?php echo $_helper->productAttribute($_product, $_description, 'description') ?>
+    </div>
+<?php endif; ?>

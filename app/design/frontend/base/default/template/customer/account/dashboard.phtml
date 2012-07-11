@@ -1,0 +1,16 @@
+
+<div class="dashboard">
+	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('hello') ?>
+	<?php echo $this->getChildHtml('points') ?>
+    <?php echo $this->getChildHtml('top') ?>
+	<div class="box-account box-info" style="display:none">
+        <div class="box-head">
+            <h2><?php echo $this->__('Account Information') ?></h2>
+        </div>
+        <?php echo $this->getChildHtml('info') ?>
+        <?php echo $this->getChildHtml('address') ?>
+    </div>
+    <?php echo $this->getChildHtml('info1') ?>
+    <?php echo $this->getChildHtml('info2') ?>
+</div>

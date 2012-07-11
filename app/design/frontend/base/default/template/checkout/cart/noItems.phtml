@@ -1,0 +1,32 @@
+
+<div class="cartnoItems">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="cartpage-title clearfix">
+		<h1 class="flh1"><?php echo $this->__('Shopping Cart') ?></h1>
+		<?php echo $this->getChildHtml('shopcar_guid') ?> </div>
+		
+		<table id="shopping-cart-table" class="data-table cart-table">
+				<col  />
+				<col width="1" />
+				<col width="1" />
+				<col width="1" />
+				<col width="1" />
+				<thead>
+					<tr>
+						<th ><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+						<th><?php echo $this->__('单价(元)') ?></th>
+						<th><?php echo $this->__('数量') ?></th>
+						<th><?php echo $this->__('小计(元)') ?></th>
+						<th><?php echo $this->__('') ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<td colspan="6"><br />
+ <h2><?php echo $this->__('购物车没有商品') ?></h2>
+<p><?php echo $this->__('<a href="%s"><< 继续购物</a>.', $this->getContinueShoppingUrl()) ?></p><br />
+<br />
+</td>
+				</tbody>
+				</table>
+		
+		</div>

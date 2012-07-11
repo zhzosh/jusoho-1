@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Makingware_EnhancedWidget>
+			<version>0.1.3</version>
+		</Makingware_EnhancedWidget>
+	</modules>
+	<global>
+		<helpers>
+			<makingware_enhancedwidget>
+				<class>Makingware_EnhancedWidget_Helper</class>
+			</makingware_enhancedwidget>
+		</helpers>
+		<models>
+			<widget_mysql4>
+				<rewrite>
+					<widget_instance>Makingware_EnhancedWidget_Model_Mysql4_Widget_Instance</widget_instance>
+				</rewrite>
+			</widget_mysql4>
+			<widget>
+				<rewrite>
+					<widget_instance>Makingware_EnhancedWidget_Model_Widget_Instance</widget_instance>
+				</rewrite>
+			</widget>
+		</models>
+		<blocks>
+			<widget>
+				<rewrite>
+					<adminhtml_widget_instance_edit_tab_main>Makingware_EnhancedWidget_Block_Adminhtml_Widget_Instance_Edit_Tab_Main</adminhtml_widget_instance_edit_tab_main>
+				</rewrite>
+			</widget>
+		</blocks>
+		<resources>
+			<makingware_enhancedwidget_setup>
+				<setup>
+					<module>Makingware_EnhancedWidget</module>
+					<class>Makingware_EnhancedWidget_Model_Mysql4_Setup</class>
+				</setup>
+			</makingware_enhancedwidget_setup>
+		</resources>
+	</global>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<makingware_enhancedwidget before="Mage_Widget_Adminhtml">Makingware_EnhancedWidget_Adminhtml</makingware_enhancedwidget>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+
+</config>

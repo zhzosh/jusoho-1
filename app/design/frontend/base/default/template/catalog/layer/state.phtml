@@ -1,0 +1,12 @@
+
+<?php $_filters = $this->getActiveFilters() ?>
+<?php if(!empty($_filters)): ?>    
+    <ol class="currently clearfix">
+    <?php foreach ($_filters as $_filter): ?>
+        <li>            
+            <a href="<?php echo $_filter->getRemoveUrl() ?>" title="<?php echo $this->__('Remove This Item') ?>" class="btn-remove"><span class="label"><?php echo $this->__($_filter->getName()) ?>:</span> <?php echo $_filter->getLabel() ?></a>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+
+<?php endif; ?>

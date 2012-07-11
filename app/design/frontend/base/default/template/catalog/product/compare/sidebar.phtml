@@ -1,0 +1,31 @@
+
+<div class="block block-compare">
+	<div class="block-title">
+		<strong><span><?php echo $this->__('Compare Products') ?>
+			<?php if($this->helper('catalog/product_compare')->getItemCount()>0): ?>
+				<small><?php echo $this->__('(%d)', $this->helper('catalog/product_compare')->getItemCount()) ?></small>
+			<?php endif; ?>
+		</span></strong>
+		 <a class="close" href="#"></a>
+	</div>
+	<div class="block-content">
+	<?php if($this->helper('catalog/product_compare')->getItemCount()>0): ?>
+		<ol id="compare-items">
+		<?php foreach($this->helper('catalog/product_compare')->getItemCollection() as $_index=>$_item): ?>
+			<li class="item">
+
+				<p class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->helper('catalog/output')->productAttribute($_item, $_item->getName(), 'name') ?></a></p>
+			</li>
+		<?php endforeach; ?>
+		</ol>
+		<script type="text/javascript">decorateList('compare-items')</script>
+		<div class="actions">
+			<a href="<?php echo $this->helper('catalog/product_compare')->getClearListUrl() ?>"><?php echo $this->__('Clear All') ?></a>
+			<button type="button" title="<?php echo $this->__('Compare') ?>" class="button" onclick="popWin('<?php echo $this->helper('catalog/product_compare')->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"><span><span><?php echo $this->__('比较') ?></span></span></button>
+
+		</div>
+	<?php else: ?>
+
+	<?php endif; ?>
+	</div>
+</div>

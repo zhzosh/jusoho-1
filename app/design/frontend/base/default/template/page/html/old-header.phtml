@@ -1,0 +1,119 @@
+<div id="header">
+  <div class="container clearfix">
+        <?php if ($this->getIsHomePage()):?>
+        	<h1><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><?php echo $this->getLogoAlt() ?></a></h1>
+        <?php else:?>
+        	<h1><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><?php echo $this->getLogoAlt() ?></a></h1>
+        <?php endif?>
+        <div class="bfR quick-access">
+        	<div class="welcome"><?php echo $this->getWelcome()?></div>     
+			         
+            <?php echo $this->getChildHtml('topLinks') ?>
+        </div>
+        <div id="main-nav" class="clearfix">
+			<?php echo $this->getChildHtml('topMenu') ?>
+	    
+            <div class="lastblock">
+                <div class="search bfL">
+                    <?php echo $this->getChildHtml('topSearch') ?>                  
+                </div>
+                <div class="headcart bfR" id="minicart"><?php echo $this->getChildHtml('topCartLink') ?></div>               
+            </div>
+        </div>
+	
+	<div id="sub_floor_menus" class="sub-floor-menus" style = "margin-left: 10px; display:none">
+		<?php echo $this->getChildHtml('floatMenu') ?>
+	</div>
+<!--
+
+	 <div id="sub_floor_menus" class="sub-floor-menus" style="display:none">
+      <div class="menu" style="display: block; ">
+        <div class="dht">
+          <div >
+            <div class="navchild" style="background: url(&quot;http://i.vanclimg.com/header/20110117/navchild_03.gif&quot;) repeat-y scroll right top transparent;width: 620px; overflow: hidden;">
+
+              <div class="childleft">
+
+                <div class="childli">
+                  <div class="childclass">
+                    <span>系列</span>
+                  </div>
+                  <div class="childdetail">
+                    <a name="head-subfloor-1_n" href="#" >时尚T恤</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >基础POLO衫</a>
+                    <span>|</span><a name="head-subfloor-1_n" href="#" class="track">NBA运动系列</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >宅男系列</a>
+<span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >迪士尼合辑</a>
+                    <br>
+                    <a name="head-subfloor-1_n" href="#" >风尚男装</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#">户外必备</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >运动系列</a>
+                  </div>
+                </div>
+                <div class="LFkinddot">
+                </div>
+
+                <div class="childli">
+                  <div class="childclass">
+                    <span>上装</span>
+                  </div>
+                  <div class="childdetail">
+                    <a name="head-subfloor-1_n" href="#" >衬衫</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >POLO衫</a>
+ <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >T恤</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >大衣</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >西服</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >风衣</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#">冲锋衣</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >夹克</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >针织衫</a>
+                    <br>
+                    <a name="head-subfloor-1_n" href="#" >卫衣</a>
+                    <span>|</span>
+                    <a name="head-subfloor-1_n" href="#" >家居服</a>
+                  </div>
+                </div>
+</div>
+
+              <div class="childright">
+                <ul>
+                  <li><a href="#" >新款男装</a></li>
+                  <li><a href="#" name="head-subfloor-1_n" >热销推荐</a></li>
+                  <li><a href="#" >男士衣柜</a></li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+--!>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>

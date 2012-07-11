@@ -1,0 +1,105 @@
+<?php
+	$_helper = $this->helper('catalog/output');
+	$_product = $this->getProduct();
+?>
+<script type="text/javascript">
+	var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+  <div class="product-essential clearfix">
+	<form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+	  <div class="no-display">
+		<input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+		<input type="hidden" name="related_product" id="related-products-field" value="" />
+	  </div>
+	  <div class="product-shop">
+		<h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+
+		<ul class="pro_v_list">
+		  <li>商品编号：<?php echo $_product->getSku(); ?></li>
+		 <li class="type_data"><?php echo $this->getChildHtml('product_type_data') ?></li>
+		  <?php echo $this->getTierPriceHtml() ?>
+		  <?php echo $this->getChildHtml('extrahint') ?>
+		   <li><?php echo $this->getChildHtml('product_review_rating')?></li>
+
+
+		  <?php if ($_product->getShortDescription()):?>
+
+		  <li class="short-description">
+			<h2><?php echo $this->__('Quick Overview') ?></h2>
+			<div class="std"><?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?></div>
+		  </li>
+		  <?php endif;?><li class="ordercart">
+		  <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+		  <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+	     <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+
+		  <?php endif;?>
+			<?php if (!$this->hasOptions()):?>
+			<div class="add-to-box">
+			  <?php if($_product->isSaleable()): ?>
+			  <?php echo $this->getChildHtml('addtocart') ?>
+			  <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+			  <span class="or"><?php echo $this->__('OR') ?></span>
+			  <?php endif; ?>
+			  <?php endif; ?>
+			  <?php echo $this->getChildHtml('addto') ?> </div>
+			<?php echo $this->getChildHtml('extra_buttons') ?>
+			<?php else:?>
+			<?php echo $this->getChildHtml('addto') ?>
+			<?php endif; ?>
+		  </li>
+		</ul>
+	  </div>
+	  <div class="product-img-box"> <?php echo $this->getChildHtml('media') ?> </div>
+
+	</form>
+	<script type="text/javascript">
+	//<![CDATA[
+		var productAddToCartForm = $('#product_addtocart_form').validator();
+		productAddToCartForm.submit = function() {
+			if(productAddToCartForm.data("validator").checkValidity()) {
+				$('#product_addtocart_form')[0].submit();
+			}
+		}
+	//]]>
+	</script>
+  </div>
+  <div class="product-collateral">
+	<div class="idtabs">
+	  <div class="itabstit">
+		<ul class="tablist">
+		  <li id="description"><span>商品详情</span></li>
+		  <li id="additional"><span>附加属性</span></li>
+		  <li id="product_related"><span>相关商品</span></li>
+          <?php if ($this->canShowReview()):?>
+		  <li id="comment"><span>客户评论</span></li>
+          <?php endif;?>
+          <?php if ($this->canLeaveMessage()):?>
+          <li id="leave-message"><span>客户咨询</span></li>
+           <?php endif;?>
+          <?php if ($this->canBuyRecords()):?>
+          <li id="buy-records"><span>购买记录</span></li>
+           <?php endif;?>
+		</ul>
+	  </div>
+	  <dl>
+		<dd class="description btab" style="display:block"><?php echo $this->getChildHtml('description'); ?></dd>
+		<dd class="additional btab"><?php echo $this->getChildHtml('additional'); ?></dd>
+		<dd class="product_related btab"><?php echo $this->getChildHtml('product_related'); ?></dd>
+        <?php if ($this->canShowReview()):?>
+		<dd class="comment btab"><?php echo $this->getChildHtml('product_review_form') ?></dd>
+        <?php endif;?>
+        <?php if ($this->canLeaveMessage()):?>
+        <dd class="leave-message btab"><?php echo $this->getChildHtml('product_leavemessage_form') ?></dd>
+        <?php endif;?>
+        <?php if ($this->canBuyRecords()):?>
+        <dd class="buy-records btab"><?php echo $this->getChildHtml('product_buyrecords_list') ?></dd>
+        <?php endif;?>
+	  </dl>
+	</div>
+	<div class="upsell_products"><?php echo $this->getChildHtml('upsell_products') ?></div>
+  </div>
+</div>

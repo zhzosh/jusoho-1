@@ -1,0 +1,44 @@
+<?php if($this->getCollection()->getSize()): ?>
+
+<div class="toolbar clearfix">
+	<?php if( $this->isExpanded() ): ?>
+	<div class="sorter">
+		<?php if( $this->isEnabledViewSwitcher() ): ?>
+		<div class="view-mode">
+			<?php $_modes = $this->getModes(); ?>
+			<?php if($_modes && count($_modes)>1): ?>
+			<?php foreach ($this->getModes() as $_code=>$_label): ?>
+			<?php if($this->isModeActive($_code)): ?>
+			<strong title="<?php echo $_label ?>" class="<?php echo strtolower($_code); ?>"><span><?php echo $_label ?></span></strong>&nbsp;
+			<?php else: ?>
+			<a href="<?php echo $this->getModeUrl($_code) ?>" title="<?php echo $_label ?>" class="<?php echo strtolower($_code); ?>"><span><?php echo $_label ?></span></a>&nbsp;
+			<?php endif; ?>
+			<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		<div class="sort-by selectbox">
+			<?php foreach($this->getAvailableOrders() as $_key=>$_order): ?>
+			<?php if($this->isOrderCurrent($_key)): ?>
+			<div class="sort_on" id="<?php echo $_key . '-' . $this->getCurrentDirection(); ?>"><span class="text">价格从高到低</span></div>
+			<?php endif; ?>
+			<?php endforeach; ?>
+			<ul class="sortlist">
+				<li class="price-desc"><a href="<?php echo $this->getOrderUrl('price', 'desc') ?>">价格从高到低</a></li>
+				<li class="price-asc"><a href="<?php echo $this->getOrderUrl('price', 'asc') ?>">价格从低到高</a></li>
+				<li class="position-desc"><a href="<?php echo $this->getOrderUrl('position', 'desc') ?>">销量从高到低</a></li>
+				<li class="last position-asc"><a href="<?php echo $this->getOrderUrl('position', 'asc') ?>">销量从低到高</a></li>
+			</ul>
+			<script type="text/javascript">SelectStyle("sort_on","sortlist")</script>
+		</div>
+		<div class="pager clearfix">
+			<?php if($this->getLastPageNum()>1): ?>
+			<p class="bfL"><?php echo $this->__('共<strong>%s</strong>件商品', $this->getTotalNum()) ?></p>
+			<?php else: ?>
+			<p class="bfL"><?php echo $this->__('共<strong>%s</strong>件商品', $this->getTotalNum()) ?></p>
+			<?php endif; ?>
+			<?php echo $this->getPagerHtml() ?> </div>
+	</div>
+	<?php endif; ?>
+</div>
+<?php endif ?>

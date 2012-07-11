@@ -1,0 +1,30 @@
+<?php echo $this->getChildHtml('items_before'); ?>
+<div id="checkout-review-table-wrapper">
+    <table class="data-table" id="checkout-review-table">
+        <?php $colspan = $rowspan = 1; ?>
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr>
+                <th rowspan="<?php echo $rowspan ?>"><?php echo $this->__('Product Name') ?></th>
+                <th colspan="<?php echo $colspan ?>" class="a-center"><?php echo $this->__('Price') ?></th>
+                <th rowspan="<?php echo $rowspan ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
+                <th colspan="<?php echo $colspan ?>" class="a-center"><?php echo $this->__('Subtotal') ?></th>
+            </tr>
+        </thead>
+        <?php echo $this->getChildHtml('totals'); ?>
+        <tbody>
+        <?php foreach($this->getItems() as $_item): ?>
+            <?php echo $this->getItemHtml($_item)?>
+        <?php endforeach ?>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    decorateTable('checkout-review-table');
+    truncateOptions();
+//]]>
+</script>

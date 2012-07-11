@@ -1,0 +1,21 @@
+<?php $_item = $this->getItem() ?>
+
+<dl class="item">
+	<dt class="pic">
+		<?php if ($this->hasProductUrl()): ?>
+		<a href="<?php echo $this->getProductUrl()?>" title="<?php echo $this->htmlEscape($this->getProductName()) ?>"><img src="<?php echo $this->getProductThumbnail()->resize(80, 60)->setWatermarkSize('30x10'); ?>" alt="<?php echo $this->htmlEscape($this->getProductName()) ?>" /></a>
+		<?php else: ?>
+		<img src="<?php echo $this->getProductThumbnail()->resize(80, 60)->setWatermarkSize('30x10'); ?>"alt="<?php echo $this->htmlEscape($this->getProductName()) ?>" />
+		<?php endif; ?>
+	</dt>
+	<dd class="name">
+		<?php if ($this->hasProductUrl()): ?>
+		<a href="<?php echo $this->getProductUrl() ?>">
+		<?php endif; ?>
+		<?php echo $this->htmlEscape($this->getProductName()) ?>
+		<?php if ($this->hasProductUrl()): ?>
+		</a>
+		<?php endif; ?>
+	</dd>
+	<dd class="prices"> <a href="<?php echo $this->getDeleteUrl() ?>" class="del" title="<?php echo $this->__('删除') ?>" onclick="return confirm('<?php echo $this->__('您确定要从购物车中删除你选择的商品？') ?>');"><?php echo $this->__('[删除]') ?></a> <?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()); ?> * <?php echo $this->getQty(); ?></dd>
+</dl>

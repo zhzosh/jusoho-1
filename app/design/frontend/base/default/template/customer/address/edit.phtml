@@ -1,0 +1,162 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if($this->getTitle()): ?>
+<script type="text/javascript">
+var countryRegions = <?php echo $this->helper('directory')->getRegionJson() ?>;
+var regionCities = <?php echo $this->helper('directory')->getCityJson() ?>;
+var cityAreas = <?php echo $this->helper('directory')->getAreaJson() ?>;
+
+$(function() {
+	var selectCountry = $('select[name="country_id"]');
+	if(!(selectCountry.length)){selectCountry = $('#country_id');}
+	var selectRegion = $('select[name="region_id"]');
+	var inputRegion = $('input[name="region"]');
+	var selectCity = $('select[name="city_id"]');
+	var inputCity = $('input[name="city"]');
+	var selectArea = $('select[name="area_id"]');
+	var inputArea = $('input[name="area"]');
+
+	selectCountry.change(function() {
+		var countryId = selectCountry.val();
+		selectRegion.empty();
+		if(countryRegions[countryId]){
+			$.each(countryRegions[countryId], function(key, item) {
+				selectRegion.append('<option value="'+key+'">'+item.name+'</option>');
+			});
+		}
+		selectRegion.trigger('change');
+	});
+
+	selectRegion.change(function() {
+		inputRegion.val($(this).find('option[value="'+$(this).val()+'"]').text());
+		var regionId = selectRegion.val();
+		selectCity.empty();
+		if(regionCities[regionId]){
+			$.each(regionCities[regionId], function(key, item) {
+				selectCity.append('<option value="'+key+'">'+item.name+'</option>');
+			});
+		}
+		selectCity.trigger('change');
+	});
+
+	selectCity.change(function() {
+		inputCity.val($(this).find('option[value="'+$(this).val()+'"]').text());
+		var cityId = selectCity.val();
+		selectArea.empty();
+		if(cityAreas[cityId]){
+			$.each(cityAreas[cityId], function(key, item) {
+				selectArea.append('<option value="'+key+'">'+item.name+'</option>');
+			});
+		}
+		selectArea.trigger('change');
+	});
+
+	selectArea.change(function() {
+		inputArea.val($(this).find('option[value="'+$(this).val()+'"]').text());
+	});
+
+	selectCountry.val("<?php echo $this->getCountryId();?>").trigger('change');
+	selectRegion.val("<?php echo $this->getAddress()->getRegionId();?>").trigger('change');
+	selectCity.val("<?php echo $this->getAddress()->getCityId();?>").trigger('change');
+	selectArea.val("<?php echo $this->getAddress()->getAreaId();?>").trigger('change');
+});
+</script>
+
+<?php endif; ?>
+<form id="form-validate" action="<?php echo $this->getSaveUrl() ?>" method="post">
+  <div class="fieldset add_form"> <?php echo $this->getBlockHtml('formkey')?>
+	<input name="success_url" type="hidden" value="<?php echo $this->getSuccessUrl() ?>" />
+	<input name="error_url" type="hidden" value="<?php echo $this->getErrorUrl() ?>" />
+	<h2 class="legend"><?php echo $this->__('Contact Information') ?></h2>
+	<ul class="form_list">
+	  <li class="fields"><?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getAddress()->getName() ? $this->getAddress() : $this->getCustomer())->toHtml() ?></li>
+
+        <?php if ($this->getCountryMore()):?>
+        <li class="fields"><span class="label-like"><?php echo $this->__('Country');?><span class="required">*</span></span>
+        <div class="input-box"><?php echo $this->getCountryHtmlSelect();?></div> </li>
+        <?php else:?>
+        <input id="country_id" name="country_id" type="hidden" value="<?php echo $this->getCountryId();?>" />
+        <?php endif;?>
+
+	  <li class="fields"><span class="label-like"><?php echo $this->__('Live in areas of')?><span class="required">*</span></span>
+		<div class="input-box">
+			<select name="region_id" validata="required:true"></select>			
+			<input name="region" type="hidden" value="<?php echo $this->getAddress()->getRegion();?>" />
+			<select name="city_id"></select>
+			<input name="city" type="hidden" value="<?php echo $this->getAddress()->getCity();?>" />
+			<select name="area_id"></select>
+			<input name="area" type="hidden" value="<?php echo $this->getAddress()->getArea();?>" />
+			<span class="prompt-msg"></span>
+		  </div>
+	  </li>
+	  <li class="fields"><span class="label-like"><?php echo $this->__('Address');?><span class="required">*</span></span>
+		<div class="input-box">
+		  <textarea cols="60" rows="3" id="street" name="street" class="address input-text" validata="required:true"><?php $street = $this->getAddress()->getStreetFull(); if (is_array($street)){$street = implode('-', $street);} echo $this->htmlEscape($street); ?></textarea>
+		  <span class="prompt-msg" message="<?php echo $this->__('Please enter your delivery address');?>"></span>
+		  </div>
+	  </li>
+	  <li class="fields"><span class="label-like"><?php echo $this->__('Zip/Postal Code');?><span class="required">*</span></span>
+		<div class="input-box">
+		  <input validata="required:true,number:true" id="zip" class="input-text input-short required-entry" name="postcode" title="<?php echo $this->__('Zip/Postal Code') ?>" type="text" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" />
+		  <span class="prompt-msg" message="<?php echo $this->__('Please enter your zip code receiving area');?>"></span>
+		</div>
+	  </li>
+	  <li class="fields"><span class="label-like"><?php echo $this->__('Telephone');?></span>
+		<div class="input-box">
+		  <input validata="number:true" id="telephone" class="input-text tel" name="telephone" title="<?php echo $this->__('Telephone') ?>" type="text" value="<?php echo $this->htmlEscape($this->getAddress()->getTelephone()) ?>" />
+		   <span class="prompt-msg" message="<?php echo $this->__('Please enter your contact Phone');?>"></span>
+		</div>
+	  </li>
+	 <li class="fields"><span class="label-like"><?php echo $this->__('Fax') ?>:</span>
+		<div class="input-box">
+		  <input id="fax" validata="number:11" class="input-text mobile" name="fax" title="<?php echo $this->__('Fax') ?>" type="text" value="<?php echo $this->htmlEscape($this->getAddress()->getFax()) ?>" />
+		  <span class="prompt-msg" message="<?php echo $this->__('Please enter your contact Fax');?>"></span>
+		</div>
+	  </li>
+        <li class="fields">
+		<?php if($this->isDefaultShipping()): ?>
+
+			<strong><?php echo $this->__('Default Shipping Address') ?></strong>
+		<?php elseif($this->canSetAsDefaultShipping()): ?>
+			<span class="label-like"><?php echo $this->__('Set as Default') ?>:</span>
+			<div class="input-box">
+		  	<input id="primary_shipping" class="checkbox" name="default_shipping" title="<?php echo $this->__('Use as my default shipping address') ?>" type="checkbox" value="1" />
+			</div>
+		<?php else: ?>
+			<input name="default_shipping" type="hidden" value="1" />
+		<?php endif; ?>
+        </li>
+
+	  <li class="fields">
+		<button class="button" title="<?php echo $this->__('Save Address') ?>" type="submit"> <span><span><?php echo $this->__('Save Address') ?></span></span> </button>&nbsp;&nbsp;<a href="<?php echo $this->getBackUrl() ?>"><?php echo $this->__('Back') . $this->__('Address Book');?></a>
+	  </li>
+	</ul>
+  </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+	makingware.form.getInstance('#form-validate', {
+    	 error: {
+             required: '<?php echo Mage::helper('core')->__('Required Fields');?>',
+             minLength: '<?php echo Mage::helper('core')->__('At least %s characters');?>',
+             number1: '<?php echo Mage::helper('core')->__('Must be a number');?>',
+             number2: '<?php echo Mage::helper('core')->__('Must be %s digits');?>',
+             email: '<?php echo Mage::helper('core')->__('Invalid %s address');?>'
+         }
+	 }).submit(function(){
+		 var $this = $(this);
+		 if (! $this.data('this').isValidata()) {
+			 return false;
+		 }
+
+		 if(!($this.find('input:[name="telephone"]').val()) && !($this.find('input:[name="fax"]').val())) {
+            $('.layer_global_tit').html("<?php echo $this->__('Telephone and mobile phone number must fill in one');?>."))
+        	$('#errorblock').dialog('open');
+        	return false;
+	     }
+		 
+		 return true;
+	 });
+});
+//]]>
+</script>

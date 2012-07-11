@@ -1,0 +1,46 @@
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<form action="<?php echo $this->getFormAction(); ?>" id="contactForm" method="post">
+	<div class="fieldset">
+		<h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Us') ?></h2>
+		<ul class="form_list">
+			<li class="fields">
+				<label for="name" class="label-like"><?php echo Mage::helper('contacts')->__('Name') ?></label>
+				<div class="input-box">
+					<input name="name" id="name" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserName()) ?>" class="input-text required" type="text" />
+					<p id="name_error" class="error"></p><p id="name_message"></p>
+				</div>
+			</li>
+			<li class="fields">
+				<label for="email" class="label-like"><?php echo Mage::helper('contacts')->__('Email') ?></label>
+				<div class="input-box">
+					<input name="email" id="email" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required" type="text" />
+					 <p id="email_error" class="error"></p><p id="email_message"></p>
+				</div>
+			</li>
+			<li class="fields">
+				<label for="telephone" class="label-like"><?php echo Mage::helper('contacts')->__('联系电话') ?></label>
+				<div class="input-box">
+					<input name="telephone" id="telephone" value="" class="input-text" type="text" />
+				</div>
+			</li>
+			<li class="fields">
+				<label for="comment" class="label-like"><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+				<div class="input-box">
+					<textarea name="comment" id="comment" style="height:100px; width:360px" class="required input-text" cols="5" rows="3"></textarea>
+					<p id="comment_error" class="error"></p><p id="comment_message"></p>
+				</div>
+			</li>
+			<li class="fields">
+				<input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+				<button type="submit" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+			</li>
+		</ul>
+	</div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+	$('#contactForm').makingwareFormValidator();
+});
+//]]>
+</script>

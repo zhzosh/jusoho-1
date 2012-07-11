@@ -1,0 +1,29 @@
+<?php $_product = $this->getProduct() ?>
+<?php list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product) ?>
+<?php $_id = $_product->getId() ?>
+
+<div class="price-box">
+        <?php if ($_product->getPriceView()): ?>
+            <p class="minimal-price">
+                <span class="price-label"><?php echo $this->__('As low as') ?>:</span>
+                <span class="price"><?php echo Mage::helper('core')->currency($_minimalPrice, true, true); ?></span>
+            </p>
+        <?php else: ?>
+            <?php if ($_minimalPrice <> $_maximalPrice): ?>
+			<span class="price-label">价格：</span>
+                <p class="price-from">
+
+                    <span class="price"><?php echo Mage::helper('core')->currency($_minimalPrice, true, true); ?></span>
+                </p>
+                <p class="price-to">
+                     - 
+                    <span class="price"><?php echo Mage::helper('core')->currency($_maximalPrice, true, true); ?></span>
+                </p>
+            <?php else: ?>
+                <p class="regular-price">
+                    <span class="price-label"><?php echo $this->__('Price') ?>:</span>
+                    <span class="price"><?php echo Mage::helper('core')->currency($_minimalPrice, true, true); ?></span>
+                </p>
+            <?php endif; ?>
+        <?php endif; ?>
+</div>

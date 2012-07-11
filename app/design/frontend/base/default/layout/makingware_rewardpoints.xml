@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <catalog_product_view>
+    	<reference name="content">
+    		<reference name="product.info">
+    			<reference name="product.info.addtocart">
+    				<block type="rewardpoints/catalog_product_view" name="product.info.extrahint.pionts" as="points" template="makingware/rewardpoints/product_view_points.phtml" />
+    			</reference>
+    		</reference>
+    	</reference>
+    </catalog_product_view>
+    
+    <customer_account_index>
+    	<reference name="customer_account_dashboard">
+    		<block type="rewardpoints/customer_account" name="customer_account_points" as="points" template="makingware/rewardpoints/account_points.phtml"/>
+        </reference>
+    </customer_account_index>
+    
+    <sales_order_view>
+    	<reference name="my.account.wrapper">
+    		<reference name="sales.order.info">
+    			<reference name="order_view">
+    				<reference name="order_items">
+    					<reference name="order_totals">
+    						<block type="rewardpoints/sales_order_totals" name="sales_order_totals.points" />
+    						<action method="insert"><block>sales_order_totals.points</block></action>
+    					</reference>
+    				</reference>
+    			</reference>
+    		</reference>
+    	</reference>
+    </sales_order_view>
+    
+    <checkout_cart_index>
+    	<reference name="content">
+    		<!--
+    		<reference name="checkout.onepage">
+    		</reference>
+    		-->
+    		<reference name="checkout.cart.item.header">
+    			<block type="rewardpoints/checkout_quote_item_header" template="makingware/rewardpoints/cart_item_header_points.phtml"/>
+    		</reference>
+    		<reference name="checkout.cart.item.content">
+    			<block type="rewardpoints/checkout_quote_item_content" template="makingware/rewardpoints/cart_item_content_points.phtml"/>
+    		</reference>
+    		<!--<block type="rewardpoints/checkout_cart" name="checkout.cart.rewardpoints" as="points" template="makingware/rewardpoints/cart_points.phtml" />-->
+    	</reference>
+    </checkout_cart_index>
+    
+    <checkout_onepage_index>
+    	<reference name="content">
+    		<reference name="checkout.onepage">
+    			<reference name="checkout.onepage.product">
+    				<reference name="checkout.onepage.product.item.header">
+    					<block type="rewardpoints/checkout_onepage_product_item_header" template="makingware/rewardpoints/onepage_item_header_points.phtml"/>
+    				</reference>
+    				<reference name="checkout.onepage.product.item.content">
+    					<block type="rewardpoints/checkout_onepage_product_item_content" template="makingware/rewardpoints/onepage_item_content_points.phtml"/>
+    				</reference>
+    			</reference>
+    			<reference name="checkout.onepage.totals">
+    				<block type="rewardpoints/checkout_onepage" name="checkout.onepage.points" as="onepage_points" template="makingware/rewardpoints/onepage_points.phtml"/>
+    			</reference>
+    		</reference>
+    	</reference>
+    </checkout_onepage_index>
+    
+    <checkout_onepage_success>
+    	<reference name="content">
+    		<reference name="checkout.success.item">
+    			<block type="rewardpoints/checkout_onepage_success" name="checkout.onepage.success.points" as="points" template="makingware/rewardpoints/onepage_success_points.phtml"/>
+    		</reference>
+    	</reference>
+    </checkout_onepage_success>
+    
+    <rewardpoints_exchange_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+            <reference name="head">
+                <action method="addCss"><stylesheet>css/exchange.css</stylesheet></action>
+            </reference>
+            <reference name="content">
+			    <block type="rewardpoints/checkout_exchange" name="exchange_index" template="makingware/rewardpoints/exchange.phtml" />
+		    </reference>
+        </reference>
+	</rewardpoints_exchange_index>
+</layout>

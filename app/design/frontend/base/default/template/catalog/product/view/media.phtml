@@ -1,0 +1,84 @@
+<?php
+
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+$galleryImages = $_product->getMediaGalleryImages();
+
+$fixSize = Mage::getStoreConfig('catalog/cloudzoom/fix_size'); // width or height
+$imgSize = Mage::getStoreConfig('catalog/cloudzoom/image_size'); // 265px by default
+
+$effect = Mage::getStoreConfig('catalog/cloudzoom/effect');
+$tint = Mage::getStoreConfig('catalog/cloudzoom/tint');
+
+$conf = array(
+	'zoomWidth' => Mage::getStoreConfig('catalog/cloudzoom/zoom_width'),
+	'zoomHeight' => Mage::getStoreConfig('catalog/cloudzoom/zoom_height'),
+	'position' => Mage::getStoreConfig('catalog/cloudzoom/position'),
+	'adjustX' => Mage::getStoreConfig('catalog/cloudzoom/adjust_x'),
+	'adjustY' => Mage::getStoreConfig('catalog/cloudzoom/adjust_y'),
+	'lensOpacity' => Mage::getStoreConfig('catalog/cloudzoom/lens_opacity'),
+	'smoothMove' => Mage::getStoreConfig('catalog/cloudzoom/smooth_move'),
+	'showTitle' => (Mage::getStoreConfig('catalog/cloudzoom/show_title') ? 'true' : 'false'),
+	'titleOpacity' => Mage::getStoreConfig('catalog/cloudzoom/title_opacity'),
+);
+if ('tint' ==  $effect) {
+	$conf['tint'] = $tint;
+	$conf['tintOpacity'] = Mage::getStoreConfig('catalog/cloudzoom/tint_opacity');
+}
+if ('focus' == $effect) {
+	$conf['softFocus'] = 'true';
+}
+$conf = implode(',', array_map(function($key, $value) {
+	return "'{$key}':'{$value}'";
+}, array_keys($conf), array_values($conf)));
+?>
+<?php if ($_product->getImage() != 'no_selection' && $_product->getImage() && !is_null($firtsImage = Mage::helper("catalog")->imageToVarien($_product))): ?>
+<script type="text/javascript">
+//<![CDATA[
+function jSelectImage(id) {
+    $("#zoom img").attr("src", $("#thumb"+id).attr("rel")).attr("title", $("#thumb"+id+" img").attr("title"));
+	if ($("#zoom").data("zoom")) {
+		$("#zoom").data("zoom").destroy();
+	};
+    $("#zoom").attr("href", $("#thumb"+id).attr("href")).CloudZoom();
+}
+//]]>
+</script>
+	<div id="imageDiv" style="width:<?php echo $imgSize;?>px;">
+        <?php $firtsImage = Mage::helper("catalog")->imageToVarien($_product); ?>
+        <a href='<?php echo $firtsImage->getUrl()?>' class='cloud-zoom' id='zoom' rel="<?php echo $conf ?>">
+          <img id="image" src="<?php echo Mage::helper("catalog")->getImage($_product, $firtsImage, $fixSize, $imgSize)?>" alt='<?php echo $this->htmlEscape($_product->getName()) ?>' style="<?php echo $fixSize.":".$imgSize ?>px" title="" />
+        </a>
+    </div>
+<?php else: ?>
+	<p class="product-image">
+		<?php
+			$_img = '<img id="image" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize(320).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+			echo $_helper->productAttribute($_product, $_img, 'image');
+		?>
+	</p>
+<?php endif; ?>
+
+<?php if (count($galleryImages) > 0): ?>
+<div class="more-views" style="display:<?php echo count($galleryImages)>1?"block":"none"?>">
+	<h4><?php echo $this->__('More Views') ?></h4>
+    <ul>
+    <?php $i=0;
+		foreach ($galleryImages as $_image): ?>
+        <li>
+        <a href="<?php echo $_image->url; ?>" class="" rel="<?php echo Mage::helper("catalog")->getImage($_product, $_image, $fixSize, $imgSize)?>" id="thumb<?php echo $i ?>" onclick="jSelectImage('<?php echo $i ?>'); return false;">
+        	<img src="<?php echo $this->helper('catalog/image')->init($_product, 'thumbnail', $_image->getFile())->resize(56); ?>" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>" />
+		</a>
+        </li>
+    <?php ++$i; endforeach; ?>
+    </ul>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+jSelectImage(0);
+//]]>
+</script>
+<?php endif; ?>
+
+
+

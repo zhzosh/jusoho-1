@@ -1,0 +1,86 @@
+<?php if ($this->getIsActive()):?>
+<?php if (!$this->getAjax()):?>
+<div class="onepage_itemspoints  clearfix">
+	<form id="points-form" class="form_list">
+<?php endif;?>
+		<div style=" display:none">
+			<span><?php echo $this->__('Total Points');?>: <strong class="total_points"><?php echo sprintf('%d', $this->getTotalPoints());?></strong></span>
+			<span style="padding:0 12px;"><?php echo $this->__('Used Points');?>: <strong class="used_points"><?php echo sprintf('%d', $this->getUsedPoints());?></strong></span>
+			<span><?php echo $this->__('Available Points');?>: <strong class="available_points"><?php echo sprintf('%d', $this->getAvailablePoints());?></strong></span>
+			<span style="padding-left:12px;"><?php echo $this->__('Minimal use of rewardPoints');?>: <strong class="min_points"><?php echo sprintf('%d', $this->getMinPoints());?></strong></span>
+		</div>
+		<?php if ($this->getDiscountAmount() > 0):?>
+		<div style="padding-bottom: 15px">
+			<?php if ($this->getPointsAmount()):?>
+			<span style="background: #FFF; color: #333; border: 1px solid #ddd; line-height: 24px; padding: 0 10px; height: 24px; font-size: 12px; display:inline-block;"><?php echo $this->__('The use of points %s', $this->getPointsAmount());?>, <?php echo $this->__('Discount the amount %s', sprintf('%0.2f', $this->getDiscountAmount()));?></span>
+			<input class="inputbutton" title="<?php echo $this->__('Cancel Points');?>" type="submit" value="<?php echo $this->__('Cancel Points');?>" />
+			<?php else:?>
+			<span><?php echo $this->__('Can discount the amount of %s', $this->getDiscountAmount());?></span>
+			<input type="text" size="20" class="info_input" name="points_amount" value="<?php echo sprintf('%d', $this->getAvailablePoints());?>" />
+			<input class="inputbutton" title="<?php echo $this->__('Use Points');?>" type="submit" value="<?php echo $this->__('Use Points');?>" />
+			<?php endif;?>
+			
+		</div>
+		<?php endif;?>
+<?php if (!$this->getAjax()):?>
+	</form>
+	<?php if ($this->getPoints() > 0):?>
+	<p>
+		<span><?php echo sprintf($this->__('Order can get <strong>%s</strong> points'),$this->getPoints());?></span>
+	</p>
+	<?php endif;?>
+</div>
+<script type="text/javascript">
+	$('#points-form').submit(function(){
+		 var $this = $(this);
+		 var $pointsInput = $this.find('input[name="points_amount"]');
+
+		 var $error = [];
+		 if ($pointsInput.size()) {
+			 if (! /^[1-9]\d*$/.test($pointsInput.val())) {
+				 $error.push("<?php echo $this->__('Please enter an integer');?>");
+				 $error.push("<?php echo $this->__('Numerical can\'t for 0 or empty');?>");
+			 }
+
+			 var value = parseInt($pointsInput.val());
+			 var maxValue = parseInt($this.find('.available_points').text());
+			 var minValue = parseInt($this.find('.min_points').text());
+
+			 if (value && !isNaN(maxValue) && !isNaN(minValue)) {
+			 	if (value > maxValue) {$error.push("<?php echo $this->__('Most can use % points');?>".replace("%", maxValue));}
+			 	if (value < minValue) {$error.push("<?php echo $this->__('Minimum use % points');?>".replace("%", minValue));}
+			 }
+		 }
+
+		 if ($error.length > 0) {
+             $('.layer_global_tit').html($error.join(', '));
+             $('#errorblock').dialog('open');
+			 return false;
+		 }
+		 
+		 $.post("<?php echo $this->getSubmitUrl();?>", $(this).serialize(), function(data) {
+			if(data){data = $.parseJSON(data);}else{data = {};}
+			if (data.error) {
+				if(data.error_messages){alert(data.error_messages);}
+				else if(data.message){alert(data.message);}
+				else{alert(data.error);}
+			}else {
+				if(data.html) {$this.html(data.html);}
+				// compute totals
+ 				if(data.section){
+ 	 				$.each(data.section, function(key, value){
+ 	 	 				if(value.name && value.html){
+ 	 	 	 				$("#"+key).html(value.html);
+ 						}else if(value.json){
+ 	 						var json = $.parseJSON(value.json);
+ 	 						$.each(json, function(k, v){$('#'+k).html(v);});
+ 						}
+ 					});
+ 				}
+			}
+		});
+		return false;
+	});
+</script>
+<?php endif;?>
+<?php endif;?>

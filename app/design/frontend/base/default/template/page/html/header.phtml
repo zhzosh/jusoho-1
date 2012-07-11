@@ -1,0 +1,29 @@
+<div id="header">
+  <div class="container clearfix">
+        <?php if ($this->getIsHomePage()):?>
+        	<h1><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><?php echo $this->getLogoAlt() ?></a></h1>
+        <?php else:?>
+        	<h1><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><?php echo $this->getLogoAlt() ?></a></h1>
+        <?php endif?>
+        <div class="bfR quick-access">
+        	<div class="welcome"><?php echo $this->getWelcome()?></div>     
+			         
+            <?php echo $this->getChildHtml('topLinks') ?>
+        </div>
+        <div id="main-nav" class="clearfix">
+			<?php echo $this->getChildHtml('topMenu') ?>
+	    
+            <div class="lastblock">
+                <div class="search bfL">
+                    <?php echo $this->getChildHtml('topSearch') ?>                  
+                </div>
+                <div class="headcart bfR" id="minicart"><?php echo $this->getChildHtml('topCartLink') ?></div>               
+            </div>
+        </div>
+	
+	<div id="sub_floor_menus" class="sub-floor-menus" style = "margin-left: 10px; display:none">
+		<?php echo $this->getChildHtml('floatMenu') ?>
+	</div>
+
+    </div>
+</div>

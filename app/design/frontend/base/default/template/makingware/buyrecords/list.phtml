@@ -1,0 +1,27 @@
+<div class="box-collateral box-buyrecords" id="customer-buyrecords">
+    <?php $_items = $this->getBuyRecordsList();?>
+    <?php if (count($_items)):?>
+    <table id="product-buyrecords-table" class="buyrecords-table">
+        <THEAD>
+            <TR class="thead">
+                <TH class="th t1">购买人</TH>
+                <TH class="th t2">发货地址</TH>
+                <TH class="th t3">数量</TH>
+                <TH class="th t4">购买时间</TH>
+            </TR>
+        </THEAD>
+        <TBODY>
+        <?php foreach ($_items as $_order):?>
+            <TR class=datarow>
+                <TD class="t1"><?php echo $this->getCustomerName($_order->getOrderId());?></TD>
+                <TD class="t2"><?php echo $this->getAddress($_order->getQtyOrdered());?></TD>
+                <TD class="t3"><?php echo sprintf("%d",$_order->getQtyOrdered());?></TD>
+                <TD class="t4"><?php echo $_order->getCreatedAt();?></TD>
+            </TR>
+        <?php endforeach; ?>
+        </TBODY>
+    </table>
+	<?php else:?>
+	没有购买记录！
+    <?php endif;?>
+</div>

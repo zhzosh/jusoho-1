@@ -1,0 +1,18 @@
+
+<?php if(!empty($collection) && $collection->getSize()): $_count = $_summary = 0; ?>
+	<?php
+		foreach ($collection as $_rating) {
+			if($_rating->getSummary()) {
+				$_summary += $_rating->getSummary();
+				$_count ++;
+			}
+		}
+	?>
+    <div class="ratings clearfix">
+	<span class="bfL">商品评分：</span>
+	<div class="rating-box">
+		<div class="rating" style="width:<?php echo ceil($_summary / $_count) ?>%;"></div>
+	</div>
+	<a href="#comment" onclick="javascript:$('#comment').trigger('click');"><?php echo $reviewsCount;?>个评论</a>
+    </div>
+<?php endif; ?>

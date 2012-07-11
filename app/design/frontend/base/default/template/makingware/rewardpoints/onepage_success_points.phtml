@@ -1,0 +1,7 @@
+<?php if ($this->getActive() && $this->getPoints() > 0):?>
+<br/>
+<span class="points">
+	<label><?php echo $this->__('After the completion of order get points');?>：</label>
+	<span class="value"><?php echo $this->getPoints();?></span>
+</span>
+<?php endif;?>

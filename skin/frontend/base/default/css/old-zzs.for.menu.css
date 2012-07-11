@@ -1,0 +1,453 @@
+HTML {
+
+	BACKGROUND: #fff; COLOR: #000
+
+}
+
+BODY {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+DIV {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+DL {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+DT {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+DD {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+UL {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+OL {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+LI {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+TH {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+TD {
+
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+
+}
+
+FIELDSET {
+
+	BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px
+
+}
+
+IMG {
+
+	BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px
+
+}
+
+LI {
+
+	LIST-STYLE-TYPE: none
+
+}
+
+EM {
+
+	FONT-STYLE: normal; FONT-WEIGHT: normal
+
+}
+
+STRONG {
+
+	FONT-STYLE: normal; FONT-WEIGHT: normal
+
+}
+
+TH {
+
+	FONT-STYLE: normal; FONT-WEIGHT: normal
+
+}
+
+BODY {
+
+	FONT-FAMILY: "ËÎÌå"; COLOR: #333; FONT-SIZE: 12px
+
+}
+
+A:link {
+
+	COLOR: #333; TEXT-DECORATION: none
+
+}
+
+A:visited {
+
+	COLOR: #333; TEXT-DECORATION: none
+
+}
+
+A:hover {
+
+	COLOR: #a10000; TEXT-DECORATION: none
+
+}
+
+#body {
+
+	FONT: 100 12px " SimSun"
+
+}
+
+BODY {
+
+	FONT-FAMILY: "ËÎÌå"
+
+}
+
+.blank0 {
+
+	LINE-HEIGHT: 0; DISPLAY: block; VISIBILITY: hidden; CLEAR: both; FONT-SIZE: 1px
+
+}
+
+
+
+
+
+#sub_floor_menus LI {
+
+	TEXT-ALIGN: center; LINE-HEIGHT: 28px; DISPLAY: inline; FLOAT: left
+
+}
+
+#sub_floor_menus LI A {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus LI A:hover {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus LI.BgPostwohover A {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus .theTag A {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus LI A {
+
+	TEXT-ALIGN: center; PADDING-BOTTOM: 0px; LINE-HEIGHT: 28px; PADDING-LEFT: 14px; PADDING-RIGHT: 14px; DISPLAY: block; BACKGROUND-POSITION: 48px -27px; COLOR: #000; FONT-SIZE: 14px; PADDING-TOP: 0px
+
+}
+
+#sub_floor_menus LI A:hover {
+
+	BACKGROUND-POSITION: 48px -57px; COLOR: #a10000
+
+}
+
+#sub_floor_menus LI.BgPostwohover A {
+
+	BACKGROUND-POSITION: 48px -57px
+
+}
+
+#sub_floor_menus .theTag A {
+
+	TEXT-ALIGN: center; LINE-HEIGHT: 30px; DISPLAY: block; BACKGROUND-POSITION: 48px -57px; COLOR: #a10000
+
+}
+
+#sub_floor_menus LI.BgPosition A {
+
+	BACKGROUND-POSITION: 64px -27px
+
+}
+
+#sub_floor_menus LI.BgPosition A:hover {
+
+	BACKGROUND-POSITION: 64px -57px
+
+}
+
+#sub_floor_menus LI.BgPositionhover A {
+
+	BACKGROUND-POSITION: 64px -57px
+
+}
+
+#sub_floor_menus LI.BgPosfour A {
+
+	BACKGROUND-POSITION: 80px -27px
+
+}
+
+#sub_floor_menus LI.BgPosfour A:hover {
+
+	BACKGROUND-POSITION: 80px -57px
+
+}
+
+#sub_floor_menus LI.BgPosfourhover A {
+
+	BACKGROUND-POSITION: 80px -57px
+
+}
+
+#sub_floor_menus LI.BgPosone A {
+
+	BACKGROUND-POSITION: 36px -27px; COLOR: #000
+
+}
+
+#sub_floor_menus LI.BgPosone A:hover {
+
+	BACKGROUND-POSITION: 36px -57px; COLOR: #a10000
+
+}
+
+#sub_floor_menus LI.BgPosonehover A {
+
+	BACKGROUND-POSITION: 36px -57px; COLOR: #a10000
+
+}
+
+#sub_floor_menus .trademark {
+
+	PADDING-LEFT: 8px; WIDTH: 282px
+
+}
+
+#sub_floor_menus LI.yunfu {
+
+	BACKGROUND-IMAGE: none
+
+}
+
+#sub_floor_menus LI.vjiaTag {
+
+	BACKGROUND-IMAGE: none
+
+}
+
+#sub_floor_menus LI.yunfu A {
+
+	BACKGROUND-IMAGE: none
+
+}
+
+#sub_floor_menus LI.vjiaTag {
+
+	BACKGROUND-IMAGE: none
+
+}
+
+#sub_floor_menus LI.vjiaTag {
+
+	WIDTH: auto
+
+}
+
+#sub_floor_menus .vjiaTag A {
+
+	PADDING-LEFT: 26px; WIDTH: auto; DISPLAY: inline; BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) -228px -43px
+
+}
+
+#sub_floor_menus .vjiaTag A:hover {
+
+	PADDING-LEFT: 26px; WIDTH: auto; DISPLAY: inline; BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) -228px -43px
+
+}
+
+#sub_floor_menus .hoticon {
+
+	Z-INDEX: 5; POSITION: absolute; WIDTH: 25px; BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat -212px -76px; HEIGHT: 13px; TOP: -35px; LEFT: 44px
+
+}
+
+#sub_floor_menus .newicon {
+
+	Z-INDEX: 5;  POSITION: absolute; WIDTH: 25px; BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat -194px -139px; HEIGHT: 13px; TOP: -35px; LEFT: 44px
+
+}
+
+#sub_floor_menus LI .pos {
+
+	POSITION: relative
+
+}
+
+#sub_floor_menus {
+
+	Z-INDEX: 5; POSITION: relative
+
+}
+
+#sub_floor_menus .sub-floor_menus {
+
+	Z-INDEX: 6
+
+}
+
+#sub_floor_menus .sub-floor-menus .menu {
+
+	Z-INDEX: 7; POSITION: absolute; DISPLAY: none; MARGIN-LEFT: -1px; TOP: 0px
+
+}
+
+#sub_floor_menus .dht {
+
+	BORDER-BOTTOM: #a10000 1px solid; BORDER-LEFT: #a10000 1px solid; WIDTH: 620px; BACKGROUND: #fff; MARGIN-LEFT: -1px; BORDER-TOP: #a10000 1px solid; BORDER-RIGHT: #a10000 1px solid; _margin-left: 0px
+
+}
+
+#sub_floor_menus .dht {
+
+	LINE-HEIGHT: 25px
+
+}
+
+#sub_floor_menus .childleft {
+
+	WIDTH: 510px; DISPLAY: inline; FLOAT: left
+
+}
+
+#sub_floor_menus .childright {
+
+	PADDING-LEFT: 10px; WIDTH: 100px; DISPLAY: inline; FLOAT: right; PADDING-TOP: 10px
+
+}
+
+#sub_floor_menus .childright LI {
+
+	DISPLAY: block; BACKGROUND: none transparent scroll repeat 0% 0%; CLEAR: both
+
+}
+
+#sub_floor_menus .navchild .childright LI A {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus .navchild .childright LI A:hover {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus .navchild .childright LI A {
+
+	TEXT-ALIGN: left; LINE-HEIGHT: 30px; PADDING-LEFT: 10px; WIDTH: 72px; DISPLAY: block; BACKGROUND-POSITION: -233px -5px; COLOR: #a10000; CLEAR: both; FONT-SIZE: 12px
+
+}
+
+#sub_floor_menus .navchild .childright LI A:hover {
+
+	BACKGROUND-POSITION: -233px -5px
+
+}
+
+#sub_floor_menus .childli {
+
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; OVERFLOW: hidden; PADDING-TOP: 2px
+
+}
+
+#sub_floor_menus .childclass {
+
+	PADDING-LEFT: 12px; WIDTH: 100px; DISPLAY: inline; FLOAT: left
+
+}
+
+#sub_floor_menus .childleft .childclass A {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus .childleft .childclass SPAN {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20120309/spritesbg.png) no-repeat
+
+}
+
+#sub_floor_menus .childleft .childclass A {
+
+	PADDING-LEFT: 5px; BACKGROUND-POSITION: -237px -15px; COLOR: #a10000; FONT-SIZE: 12px; FONT-WEIGHT: bold
+
+}
+
+#sub_floor_menus .childleft .childclass SPAN {
+
+	PADDING-LEFT: 5px; BACKGROUND-POSITION: -237px -15px; COLOR: #a10000; FONT-SIZE: 12px; FONT-WEIGHT: bold
+
+}
+
+#sub_floor_menus .childdetail {
+
+	WIDTH: 398px; DISPLAY: inline; FLOAT: left
+
+}
+
+#sub_floor_menus .childdetail A {
+
+	DISPLAY: inline; FLOAT: left
+
+}
+
+#sub_floor_menus .childdetail SPAN {
+
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 6px; PADDING-RIGHT: 6px; DISPLAY: inline; FLOAT: left; COLOR: #999; PADDING-TOP: 0px
+
+}
+
+#sub_floor_menus .LFkinddot {
+
+	BACKGROUND: url(http://i.vanclimg.com/header/20110117/childdotbg.gif) repeat-x; HEIGHT: 1px; CLEAR: both; FONT-SIZE: 1px
+
+}

@@ -1,0 +1,12 @@
+<?php $_menu = ''?>
+<?php foreach ($this->getStoreCategories() as $_category): ?>
+<?php $_menu .= $this->drawItem($_category) ?>
+<?php endforeach ?>
+<?php if ($_menu): ?>
+
+<ul class="nav">
+  <li><a href="<?php echo $this->getUrl('') ?>">首页</a></li>
+  <?php echo $_menu ?>
+  <li class="bfR"><a href="#">促销</a>
+</ul>
+<?php endif ?>

@@ -1,0 +1,50 @@
+<div class="my-wishlist">
+    <div class="page-title">
+        <h1><?php echo $this->htmlEscape($this->getHeader()) ?></h1>
+    </div>
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php if ($this->hasWishlistItems()): ?>
+    <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
+        <fieldset>
+
+<table bordercolor="#e3e3e3" border="1" width="100%" class="data-table1" id="wishlist-table">
+            <thead>
+                <tr>
+                    <th><?php echo $this->__('Product') ?></th>
+                    <th><?php echo $this->__('Comment') ?></th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($this->getWishlistItems() as $item): ?>
+                <tr>
+                    <td>
+                        <a href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->htmlEscape($item->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($item, 'small_image')->resize(113); ?>" width="113" height="113" alt="<?php echo $this->htmlEscape($item->getName()) ?>" /></a>
+                        <p class="product-name"><a href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->htmlEscape($item->getName()) ?>"><?php echo $this->htmlEscape($item->getName()) ?></a></p>
+                        <?php echo $this->getPriceHtml($item) ?>
+                    </td>
+                    <td><?php echo $this->getEscapedDescription($item) ?></td>
+                    <td>
+                        <ul class="add-to-links">
+                        <?php if ($item->isSaleable()): ?>
+                            <li><a href="#" onclick="setLocation('<?php echo $this->getAddToCartUrl($item) ?>'); return false;" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></li>
+                        <?php endif;?>
+                        <li><a href="#" onclick="setLocation('<?php echo $this->getAddToWishlistUrl($item) ?>'); return false;" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <?php endforeach ?>
+            </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('wishlist-table');</script>
+        </fieldset>
+        <?php if ($this->isSaleable()):?>
+        <div class="buttons-set">
+            <input type="button" title="<?php echo $this->__('Add All to Cart') ?>" onclick="setLocation('<?php echo $this->getUrl('*/*/allcart', array('_current'=>true)) ?>')" class="button" value="<?php echo $this->__('Add All to Cart') ?>" />
+        </div>
+        <?php endif;?>
+    </form>
+    <?php else: ?>
+        <p><?php echo $this->__('Wishlist is empty now.') ?></p>
+    <?php endif ?>
+</div>

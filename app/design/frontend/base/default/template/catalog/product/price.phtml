@@ -1,0 +1,36 @@
+<?php
+    $_coreHelper        = $this->helper('core');
+
+    $_product           = $this->getProduct();
+    $_id                = $_product->getId();
+    $_storeId           = $_product->getStoreId();
+?>
+
+<div class="price-box">
+	<?php if ($this->isSpecial($_product)): //有特价 ?>
+<!--    <?php echo $_product->getFinalPrice();?>-->
+	<p class="old-price"><span class="price-label"><?php echo $this->__('Regular Price:') ?></span><span class="price" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+	<?php echo $_coreHelper->currencyByStore($_product->getPrice(), $_storeId, true, false) ?></span></p>
+	<p class="special-price"><span class="price-label"><?php echo $this->__('Special Price:') ?></span><span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>"><?php echo $_coreHelper->currencyByStore($_product->getFinalPrice(), $_storeId, true, false) ?></span></p>
+	<?php else: //正常价格 ?>
+	
+		<?php if ($this->getDisplayMinimalPrice() && $_product->getMinimalPrice() < $_product->getFinalPrice()): ?>
+			<p class="old-order-price"><span class="price-label"><?php echo $this->__('Price:') ?></span><span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>"><?php echo $_coreHelper->currencyByStore($_product->getFinalPrice(), $_storeId, true, false) ?></span></p>
+			
+			<?php if ($this->getUseLinkForAsLowAs()):?>
+				<a href="<?php echo $_product->getProductUrl(); ?>" class="minimal-price-link">
+			<?php else:?>
+				<span class="minimal-price-link">
+			<?php endif?>
+			<span class="label"><?php echo $this->__('只需:') ?></span> <span class="price" id="product-minimal-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>"><?php echo $_coreHelper->currencyByStore($_product->getMinimalPrice(), $_storeId, true, false) ?></span>
+			<?php if ($this->getUseLinkForAsLowAs()):?>
+			</a>
+		<?php else:?>
+			</span>
+			<?php endif?>
+		<?php else :?>
+		<p class="order-price"><span class="price-label"><?php echo $this->__('Price:') ?></span><span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>"><?php echo $_coreHelper->currencyByStore($_product->getFinalPrice(), $_storeId, true, false) ?></span></p>
+		<?php endif?>
+
+	<?php endif ;?>
+</div>

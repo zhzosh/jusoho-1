@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Payment
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Mage_Payment>
+            <version>0.7.0</version>
+        </Mage_Payment>
+    </modules>
+
+    <global>
+        <models>
+            <payment>
+                <class>Mage_Payment_Model</class>
+            </payment>
+        </models>
+
+        <resources>
+            <payment_setup>
+                <setup>
+                    <module>Mage_Payment</module>
+                </setup>
+            </payment_setup>
+        </resources>
+
+        <blocks>
+            <payment>
+                <class>Mage_Payment_Block</class>
+            </payment>
+        </blocks>
+
+        <payment>
+            <cod>
+            	<types>
+            		<CASH>
+            			<code>CASH</code>
+            			<name>Cash</name>
+            			<order>0</order>
+            		</CASH>
+            		<POS>
+            			<code>POS</code>
+            			<name>Pos</name>
+            			<order>10</order>
+            		</POS>
+            	</types>
+            </cod>
+            <groups>
+                <offline>Offline Payment Methods</offline>
+            </groups>
+        </payment>
+
+        <events>
+            <sales_order_save_before>
+                <observers>
+                    <payment_sales_order_save_before>
+                        <class>payment/observer</class>
+                        <method>salesOrderBeforeSave</method>
+                    </payment_sales_order_save_before>
+                </observers>
+            </sales_order_save_before>
+        </events>
+    </global>
+
+    <frontend>
+        <translate>
+            <modules>
+                <Mage_Payment>
+                    <files>
+                        <default>Mage_Payment.csv</default>
+                    </files>
+                </Mage_Payment>
+            </modules>
+        </translate>
+        <events>
+            <catalog_product_type_prepare_cart_options>
+                <observers>
+                    <payment_recurring_profile_prepare_options>
+                        <class>payment/observer</class>
+                        <method>prepareProductRecurringProfileOptions</method>
+                    </payment_recurring_profile_prepare_options>
+                </observers>
+            </catalog_product_type_prepare_cart_options>
+        </events>
+        <layout>
+            <updates>
+                <payment module="Mage_Payment">
+                    <file>payment.xml</file>
+                </payment>
+            </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Mage_Payment>
+                    <files>
+                        <default>Mage_Payment.csv</default>
+                    </files>
+                </Mage_Payment>
+            </modules>
+        </translate>
+   </adminhtml>
+
+    <default>
+        <payment module="Mage_Payment">
+			<cod translate="title">
+                <active>1</active>
+                <codtypes>CASH,POS</codtypes>
+                <model>payment/method_cod</model>
+                <order_status>processing</order_status>
+                <title>货到付款</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </cod>
+            <free translate="title">
+                <active>1</active>
+                <model>payment/method_free</model>
+                <order_status>processing</order_status>
+                <title>Free</title>
+                <allowspecific>0</allowspecific>
+				<!--<min_order_total>0</min_order_total>
+                <max_order_total>0</max_order_total>-->
+                <sort_order>1</sort_order>
+                <group>offline</group>
+            </free>
+         </payment>
+    </default>
+</config>

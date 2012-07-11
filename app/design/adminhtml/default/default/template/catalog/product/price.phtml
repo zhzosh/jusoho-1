@@ -1,0 +1,74 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php
+/**
+ * Template for displaying product price in different places (products grid, product view page etc)
+ *
+ * @see Mage_Adminhtml_Block_Catalog_Product_Price
+ */
+?>
+<?php
+    $_coreHelper        = $this->helper('core');
+
+    $_product           = $this->getProduct();
+    $_id                = $_product->getId();
+    $_storeId           = $_product->getStoreId();
+    $_website           = Mage::app()->getStore($_storeId)->getWebsite();
+?>
+<div class="price-box">
+	<p class="old-price">
+		<span class="price-label"><?php echo $this->__('Regular Price:') ?></span>
+        <span class="price" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+        	<?php echo $_coreHelper->currencyByStore($_product->getPrice(), $_storeId, true, false) ?>
+        </span>
+    </p>
+    <?php if ($_finalPrice != $_price): ?>
+    <p class="special-price">
+    	<span class="price-label"><?php echo $this->__('Special Price:') ?></span>
+        <span class="price" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+            <?php echo $_coreHelper->currencyByStore($_product->getFinalPrice(), $_storeId, true, false) ?>
+        </span>
+    </p>
+    <?php endif; ?>
+	<?php if ($this->getDisplayMinimalPrice() && $_product->getMinimalPrice() < $_product->getFinalPrice()): ?>
+	    <?php if ($this->getUseLinkForAsLowAs()):?>
+	    <a href="<?php echo $_product->getProductUrl(); ?>" class="minimal-price-link">
+	    <?php else:?>
+	    <span class="minimal-price-link">
+	    <?php endif?>
+	        <span class="label"><?php echo $this->__('As low as:') ?></span>
+	        <span class="price" id="product-minimal-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+	            <?php echo $_coreHelper->currencyByStore($_product->getMinimalPrice(), $_storeId, true, false) ?>
+	        </span>
+	    <?php if ($this->getUseLinkForAsLowAs()):?>
+	    </a>
+	    <?php else:?>
+	    </span>
+	    <?php endif?>
+	<?php endif; /* if ($this->getDisplayMinimalPrice() && $_minimalPrice && $_minimalPrice < $_finalPrice): */ ?>
+</div>

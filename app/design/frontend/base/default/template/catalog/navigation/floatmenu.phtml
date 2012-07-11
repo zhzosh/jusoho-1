@@ -1,0 +1,61 @@
+<?php $collection = $this->getStoreCategories();?>
+<?php $i = 1; $j = 0; $k = 0; $jcount = 0; $kcout = 0; $menuname = "";?>  
+    <?php foreach ($collection as $_category):?>
+          <?php $menuname = "floatmenu0".$i;  $i = $i + 1;?>
+<div class="menu" id = <?php echo $menuname?>  style="display: none" >
+        <div class="dht">
+          <div class="fmenu">
+           <div class="navchild" style="background:#fff; width: 510px; overflow: hidden;">
+ 		
+		<div class="childleft">
+	<?php //$jcount = count($_category->getChildren()); 
+		$jcount = 0; $j = 0;?>
+	<?php foreach($_category->getChildren() as $_childCategory): ?>
+	<?php $jcount = $jcount + 1; ?>
+	<?php endforeach?>
+        <?php foreach($_category->getChildren() as $_childCategory):?>        
+			<div class="childli">
+                  	  <div class="childclass">
+				
+                    		<a href="<?php echo $this->getCategoryUrl($_childCategory)?>"><?php echo $_childCategory->getName()?></a>
+                  	  	
+			  </div>
+
+                                <div class="childdetail">
+		    <?php //$kcount = count($_childCategory->getChildren()); 
+			$k = 0; $kcount = 0;?>
+		    
+                    <?php foreach($_childCategory->getChildren() as $_cchildCategory):?>
+		    <?php $kcount = $kcount+1;?>
+		    <?php endforeach ?>
+                    <?php foreach($_childCategory->getChildren() as $_cchildCategory):?>
+                    		<a name="head-subfloor-1_n" href="<?php echo $this->getCategoryUrl($_cchildCategory)?>" ><?php echo $_cchildCategory->getName()?></a>
+                    <?php $k = $k + 1; if ($k != $kcount) : ?>   	
+			<span>|</span>
+                    <?php endif ?>
+                    <?php endforeach?>
+
+                  		</div>
+			</div>
+			<?php $j = $j +1; if($j != $jcount){ ?>
+			<div class="LFkinddot">
+                	</div>
+			<?php }?>
+        <?php endforeach?>
+ 
+		</div>
+	<!--
+              <div class="childright">
+                <ul>
+                  <li><a href="#" >新款男装</a></li>
+                  <li><a href="#" name="head-subfloor-1_n" >热销推荐</a></li>
+                  <li><a href="#" >男士衣柜</a></li>
+                </ul>
+              </div>
+	-->
+           </div>
+          </div>
+        </div>
+      </div>
+
+    <?php endforeach?>

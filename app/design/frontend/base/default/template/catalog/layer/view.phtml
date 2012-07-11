@@ -1,0 +1,23 @@
+<?php echo $this->getChildHtml('catalog.leftnav_product_title'); ?>
+<?php if($this->canShowBlock()): ?>
+
+<div class="keycount">
+  <dl class="title clearfix">
+    <dt><span><?php echo $this->__('Commodity screening');?></span></dt>
+    <dd><?php echo $this->getStateHtml() ?></dd>
+  </dl>
+  <div class="content clearfix">
+    <?php if($this->canShowOptions()): ?>
+    <dl id="narrow-by-list" >
+      <?php $_filters = $this->getFilters() ?>
+      <?php foreach ($_filters as $_filter): ?>
+      <?php if($_filter->getItemsCount()): ?>
+      <dd class="clearfix"> <span class="ttitle"><?php echo $this->__($_filter->getName()) ?>: </span> <span class="list"><?php echo $_filter->getHtml() ?></span> </dd>
+      <?php endif; ?>
+      <?php endforeach; ?>
+    </dl>
+    <script type="text/javascript">decorateList('narrow-by-list')</script>
+    <?php endif; ?>
+  </div>
+</div>
+<?php endif; ?>

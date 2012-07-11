@@ -1,0 +1,7 @@
+<form id="search_mini_form" action="<?php echo $this->helper('catalogsearch')->getResultUrl() ?>" method="get" enctype="application/x-www-form-urlencoded" accept-charset="utf-8">
+
+  <div class="form-search">
+    <input id="search" type="text" name="<?php echo $this->helper('catalogsearch')->getQueryParamName() ?>" value="<?php echo $this->helper('catalogsearch')->getEscapedQueryText() ?>" class="input-text" />
+    <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__("Search ");?></span></span></button>
+  </div>
+</form>
